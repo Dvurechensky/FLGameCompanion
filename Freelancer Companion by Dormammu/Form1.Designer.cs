@@ -1,6 +1,6 @@
 ﻿namespace Freelancer_Companion_by_Dormammu
 {
-    partial class Form1
+    partial class FreelancerCompanionDvurechensky
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -28,64 +28,76 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBoxStatus = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LoggerTextBox = new System.Windows.Forms.TextBox();
+            this.Map = new System.Windows.Forms.PictureBox();
             this.comboBoxSystems = new System.Windows.Forms.ComboBox();
             this.labelSystemss = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Map)).BeginInit();
             this.SuspendLayout();
             // 
-            // textBoxStatus
+            // LoggerTextBox
             // 
-            this.textBoxStatus.Font = new System.Drawing.Font("Berlin Sans FB", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBoxStatus.Location = new System.Drawing.Point(12, 4);
-            this.textBoxStatus.Multiline = true;
-            this.textBoxStatus.Name = "textBoxStatus";
-            this.textBoxStatus.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxStatus.Size = new System.Drawing.Size(482, 58);
-            this.textBoxStatus.TabIndex = 0;
+            this.LoggerTextBox.Cursor = System.Windows.Forms.Cursors.No;
+            this.LoggerTextBox.Font = new System.Drawing.Font("Sylfaen", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LoggerTextBox.Location = new System.Drawing.Point(1006, 31);
+            this.LoggerTextBox.Multiline = true;
+            this.LoggerTextBox.Name = "LoggerTextBox";
+            this.LoggerTextBox.ReadOnly = true;
+            this.LoggerTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.LoggerTextBox.Size = new System.Drawing.Size(281, 967);
+            this.LoggerTextBox.TabIndex = 0;
             // 
-            // pictureBox1
+            // Map
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 68);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1000, 1000);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            this.Map.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.Map.Location = new System.Drawing.Point(0, -2);
+            this.Map.Name = "Map";
+            this.Map.Size = new System.Drawing.Size(1000, 1000);
+            this.Map.TabIndex = 1;
+            this.Map.TabStop = false;
+            this.Map.Paint += new System.Windows.Forms.PaintEventHandler(this.Map_Paint);
             // 
             // comboBoxSystems
             // 
+            this.comboBoxSystems.DisplayMember = "Add";
+            this.comboBoxSystems.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxSystems.FormattingEnabled = true;
-            this.comboBoxSystems.Location = new System.Drawing.Point(701, 12);
+            this.comboBoxSystems.Location = new System.Drawing.Point(1006, 4);
             this.comboBoxSystems.Name = "comboBoxSystems";
-            this.comboBoxSystems.Size = new System.Drawing.Size(311, 21);
+            this.comboBoxSystems.Size = new System.Drawing.Size(233, 24);
             this.comboBoxSystems.TabIndex = 2;
             // 
             // labelSystemss
             // 
             this.labelSystemss.AutoSize = true;
-            this.labelSystemss.Font = new System.Drawing.Font("Microsoft YaHei UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelSystemss.Location = new System.Drawing.Point(513, 8);
+            this.labelSystemss.BackColor = System.Drawing.Color.DarkOrchid;
+            this.labelSystemss.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.labelSystemss.Font = new System.Drawing.Font("MS PGothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelSystemss.ForeColor = System.Drawing.Color.FloralWhite;
+            this.labelSystemss.Location = new System.Drawing.Point(1243, 6);
             this.labelSystemss.Name = "labelSystemss";
-            this.labelSystemss.Size = new System.Drawing.Size(117, 28);
+            this.labelSystemss.Size = new System.Drawing.Size(44, 21);
             this.labelSystemss.TabIndex = 3;
-            this.labelSystemss.Text = "CИСТЕМ: ";
+            this.labelSystemss.Text = "999";
+            this.labelSystemss.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Form1
+            // FreelancerCompanionDvurechensky
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1031, 1080);
+            this.BackColor = System.Drawing.Color.Cornsilk;
+            this.ClientSize = new System.Drawing.Size(1294, 996);
             this.Controls.Add(this.labelSystemss);
             this.Controls.Add(this.comboBoxSystems);
-            this.Controls.Add(this.pictureBox1);
-            this.Controls.Add(this.textBoxStatus);
-            this.Name = "Form1";
+            this.Controls.Add(this.Map);
+            this.Controls.Add(this.LoggerTextBox);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(1310, 1035);
+            this.MinimizeBox = false;
+            this.Name = "FreelancerCompanionDvurechensky";
             this.ShowIcon = false;
             this.Text = "Freelancer Companion";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Map)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,8 +105,8 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxStatus;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox LoggerTextBox;
+        private System.Windows.Forms.PictureBox Map;
         private System.Windows.Forms.ComboBox comboBoxSystems;
         private System.Windows.Forms.Label labelSystemss;
     }
