@@ -28,24 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.LoggerTextBox = new System.Windows.Forms.TextBox();
             this.Map = new System.Windows.Forms.PictureBox();
             this.comboBoxSystems = new System.Windows.Forms.ComboBox();
             this.labelSystemss = new System.Windows.Forms.Label();
+            this.LoggerRichTextBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.Map)).BeginInit();
             this.SuspendLayout();
-            // 
-            // LoggerTextBox
-            // 
-            this.LoggerTextBox.Cursor = System.Windows.Forms.Cursors.No;
-            this.LoggerTextBox.Font = new System.Drawing.Font("Sylfaen", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.LoggerTextBox.Location = new System.Drawing.Point(1006, 31);
-            this.LoggerTextBox.Multiline = true;
-            this.LoggerTextBox.Name = "LoggerTextBox";
-            this.LoggerTextBox.ReadOnly = true;
-            this.LoggerTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.LoggerTextBox.Size = new System.Drawing.Size(281, 967);
-            this.LoggerTextBox.TabIndex = 0;
             // 
             // Map
             // 
@@ -64,8 +52,9 @@
             this.comboBoxSystems.FormattingEnabled = true;
             this.comboBoxSystems.Location = new System.Drawing.Point(1006, 4);
             this.comboBoxSystems.Name = "comboBoxSystems";
-            this.comboBoxSystems.Size = new System.Drawing.Size(233, 24);
+            this.comboBoxSystems.Size = new System.Drawing.Size(336, 24);
             this.comboBoxSystems.TabIndex = 2;
+            this.comboBoxSystems.SelectedIndexChanged += new System.EventHandler(this.comboBoxSystems_SelectedIndexChanged);
             // 
             // labelSystemss
             // 
@@ -74,26 +63,36 @@
             this.labelSystemss.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.labelSystemss.Font = new System.Drawing.Font("MS PGothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelSystemss.ForeColor = System.Drawing.Color.FloralWhite;
-            this.labelSystemss.Location = new System.Drawing.Point(1243, 6);
+            this.labelSystemss.Location = new System.Drawing.Point(1348, 4);
             this.labelSystemss.Name = "labelSystemss";
             this.labelSystemss.Size = new System.Drawing.Size(44, 21);
             this.labelSystemss.TabIndex = 3;
             this.labelSystemss.Text = "999";
             this.labelSystemss.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // LoggerRichTextBox
+            // 
+            this.LoggerRichTextBox.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.LoggerRichTextBox.Location = new System.Drawing.Point(1006, 34);
+            this.LoggerRichTextBox.Name = "LoggerRichTextBox";
+            this.LoggerRichTextBox.Size = new System.Drawing.Size(386, 964);
+            this.LoggerRichTextBox.TabIndex = 4;
+            this.LoggerRichTextBox.Text = "";
+            // 
             // FreelancerCompanionDvurechensky
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
-            this.ClientSize = new System.Drawing.Size(1294, 996);
+            this.ClientSize = new System.Drawing.Size(1394, 996);
+            this.Controls.Add(this.LoggerRichTextBox);
             this.Controls.Add(this.labelSystemss);
             this.Controls.Add(this.comboBoxSystems);
             this.Controls.Add(this.Map);
-            this.Controls.Add(this.LoggerTextBox);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(1310, 1035);
+            this.MaximumSize = new System.Drawing.Size(1410, 1035);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1310, 1035);
             this.Name = "FreelancerCompanionDvurechensky";
             this.ShowIcon = false;
             this.Text = "Freelancer Companion";
@@ -104,11 +103,10 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox LoggerTextBox;
         private System.Windows.Forms.PictureBox Map;
         private System.Windows.Forms.ComboBox comboBoxSystems;
         private System.Windows.Forms.Label labelSystemss;
+        private System.Windows.Forms.RichTextBox LoggerRichTextBox;
     }
 }
 

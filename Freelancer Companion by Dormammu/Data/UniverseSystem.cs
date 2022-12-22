@@ -1,4 +1,6 @@
-﻿namespace Freelancer_Companion_by_Dormammu.Data
+﻿using System.Collections.Generic;
+
+namespace Freelancer_Companion_by_Dormammu.Data
 {
     public class UniverseSystem
     {
@@ -38,5 +40,33 @@
         /// НПС говорят название объекта
         /// </summary>
         public string MsgIdPrefix { get; set; }
+        /// <summary>
+        /// Список объектов
+        /// </summary>
+        public List<ObjectSystem> Objects { get; set; }
+    }
+
+    public class ObjectSystem
+    {
+        /// <summary>
+        /// ID
+        /// </summary>
+        public string ID { get; set; }
+        /// <summary>
+        /// Местоположение
+        /// </summary>
+        public int[] Pos { get; set; }
+        /// <summary>
+        /// База ID
+        /// </summary>
+        public string BaseID { get; set; }
+        /// <summary>
+        /// Инфокарта объекта
+        /// </summary>
+        public string IdsName { get; set; }
+        /// <summary>
+        /// Принадлежность объекта
+        /// </summary>
+        public string Archetype { get; set; }
     }
 }

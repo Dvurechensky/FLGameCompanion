@@ -1,11 +1,7 @@
-﻿using Freelancer_Companion_by_Dormammu.Data;
-using Freelancer_Companion_by_Dormammu.Services;
-using System;
-using System.Collections.Generic;
+﻿using Freelancer_Companion_by_Dormammu.Services;
 using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Freelancer_Companion_by_Dormammu
@@ -19,10 +15,9 @@ namespace Freelancer_Companion_by_Dormammu
         {
             InitializeComponent();
 
-            LogService = new LogService(LoggerTextBox);
+            LogService = new LogService(LoggerRichTextBox);//LoggerTextBox
 
             InitializeSystems();
-            InitializeData();
         }
 
         /// <summary>
@@ -32,17 +27,8 @@ namespace Freelancer_Companion_by_Dormammu
         {
             SystemService = new SystemService();
             SystemService.GetInfo(comboBoxSystems, LogService);
-            LogService.LogEvent("Список ID систем определён");
             labelSystemss.Text = comboBoxSystems.Items.Count.ToString();
-            if(comboBoxSystems.SelectedIndex > 0)
-                comboBoxSystems.SelectedIndex = 0;
         }
-
-        private void InitializeData()
-        {
-            string loadedString = SystemService.ExtractStringFromDLL("SBM3.dll", 534601);
-        }
-
 
         /// <summary>
         /// Отрисовка первоначального вида карты
@@ -64,6 +50,13 @@ namespace Freelancer_Companion_by_Dormammu
 
             //Центр координат
             e.Graphics.FillEllipse(Brushes.Red, -2, -2, 4, 4);
+        }
+
+        private void comboBoxSystems_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            var comboBox = (ComboBox)sender;
+            var listSystem = SystemService.SystemsID[comboBox.SelectedIndex];
+            LogService.LogEvent("[" + listSystem + "] " + SystemService.UniverseSystemsData[listSystem].Name);
         }
     }
 }
