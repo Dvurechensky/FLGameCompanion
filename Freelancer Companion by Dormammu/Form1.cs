@@ -9,6 +9,7 @@ namespace Freelancer_Companion_by_Dormammu
     public partial class FreelancerCompanionDvurechensky : Form
     {
         private LogService LogService { get; set; }
+        private DrawService DrawService { get; set; }
         private SystemService SystemService { get; set; }
 
         public FreelancerCompanionDvurechensky()
@@ -26,6 +27,7 @@ namespace Freelancer_Companion_by_Dormammu
         private void InitializeSystems()
         {
             SystemService = new SystemService();
+            DrawService = new DrawService(5, 3);
             SystemService.GetInfo(comboBoxSystems, LogService);
             labelSystemss.Text = comboBoxSystems.Items.Count.ToString();
         }
@@ -44,9 +46,8 @@ namespace Freelancer_Companion_by_Dormammu
             e.Graphics.TranslateTransform(w, h);
 
             //отрисовка осей и стрелок
-            var drawService = new DrawService(5, 3);
-            drawService.DrawXAxis(new Point(-w, 0), new Point(w, 0), e.Graphics);
-            drawService.DrawYAxis(new Point(0, h), new Point(0, -h), e.Graphics);
+            DrawService.DrawXAxis(new Point(-w, 0), new Point(w, 0), e.Graphics);
+            DrawService.DrawYAxis(new Point(0, h), new Point(0, -h), e.Graphics);
 
             //Центр координат
             e.Graphics.FillEllipse(Brushes.Red, -2, -2, 4, 4);
@@ -56,7 +57,13 @@ namespace Freelancer_Companion_by_Dormammu
         {
             var comboBox = (ComboBox)sender;
             var listSystem = SystemService.SystemsID[comboBox.SelectedIndex];
-            LogService.LogEvent("[" + listSystem + "] " + SystemService.UniverseSystemsData[listSystem].Name);
+            foreach(var baseID in SystemService.UniverseSystemsData[listSystem].Objects.FindAll((item) => item.BaseID != null).ToArray())
+            {
+                LogService.LogEvent("[" + listSystem + "] " + baseID.BaseID);
+                //первая координата это X отрицательно влево - положительно вправо
+                //вторая коордианат это Y отрицательно вверх - положительно вниз
+                //третья координата это Z отрицательно вниз - положительно вверх
+            }
         }
     }
 }

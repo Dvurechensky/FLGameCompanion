@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace Freelancer_Companion_by_Dormammu.Services
 {
@@ -176,6 +177,16 @@ namespace Freelancer_Companion_by_Dormammu.Services
                                                 }).ToArray();
                                                 UniverseSystemsData[systemId].Objects[countObject - 1].Pos = pos;
                                             }
+                                            if(data.Contains("base ="))
+                                            {
+                                                var baseID = (data.Substring(6, data.Length - 6)).Trim();
+                                                UniverseSystemsData[systemId].Objects[countObject - 1].BaseID = baseID;
+                                            }
+                                            if (data.Contains("ids_name ="))
+                                            {
+                                                var idsName = (data.Substring(10, data.Length - 10)).Trim();
+                                                UniverseSystemsData[systemId].Objects[countObject - 1].IdsName = idsName;
+                                            }
                                         }
 
                                         data = sr.ReadLine();
@@ -195,6 +206,8 @@ namespace Freelancer_Companion_by_Dormammu.Services
                                 if (line.Contains("strid_name"))
                                 {
                                     var dll_name = (line.Substring(12, line.Length - 12)).Trim();
+                                    if (dll_name.Contains(";"))
+                                        dll_name = dll_name.Substring(0, dll_name.IndexOf(';'));
                                     UniverseBasesData[baseId].DLL_Name = dll_name;
                                     var names = GetNameSystem(logService, int.Parse(dll_name));
                                     foreach (var name in names)
@@ -206,6 +219,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         }
                     }
                 }
+
                 logService.LogEvent("Список баз определён");
 
                 var resultDataSystems = new Dictionary<string, UniverseSystem>();

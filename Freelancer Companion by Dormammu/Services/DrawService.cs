@@ -69,6 +69,17 @@ namespace Freelancer_Companion_by_Dormammu.Services
         }
 
         /// <summary>
+        /// Рисует местоположение базы
+        /// </summary>
+        /// <param name="X">X</param>
+        /// <param name="Y">Y</param>
+        /// <param name="map">Карта</param>
+        public void DrawPoint(int X, int Y, Graphics map)
+        {
+            map.FillRectangle(Brushes.Red, X, Y, 3, 3);
+        }
+
+        /// <summary>
         /// Рисование текста
         /// </summary>
         /// <param name="point">Местоположение</param>

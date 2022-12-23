@@ -61,6 +61,10 @@ namespace Freelancer_Companion_by_Dormammu.Data
         /// </summary>
         public string BaseID { get; set; }
         /// <summary>
+        /// Имя базы
+        /// </summary>
+        public string NameBase { get; set; }
+        /// <summary>
         /// Инфокарта объекта
         /// </summary>
         public string IdsName { get; set; }
