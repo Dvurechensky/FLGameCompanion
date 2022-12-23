@@ -7,7 +7,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
 namespace Freelancer_Companion_by_Dormammu.Services
 {
@@ -27,6 +26,8 @@ namespace Freelancer_Companion_by_Dormammu.Services
         public Dictionary<string, UniverseBase> UniverseBasesData { get; set; }
         public List<string> SystemsID { get; set; }
         public string IDCurrent { get; set; }
+        private string BaseId { get; set; }
+        private string SystemID { get; set; }
 
         public SystemService()
         {
@@ -53,175 +54,34 @@ namespace Freelancer_Companion_by_Dormammu.Services
         public void GetInfo(ComboBox blockInfo, LogService logService)
         {
             try
-            {
-                File.Delete("log.txt");
+            {   File.Delete("log.txt"); //чищу логи
                 var dirInfoSystems = new DirectoryInfo("SYSTEMS");
                 var dirInfoArray = dirInfoSystems.GetDirectories();
-
-                //получаю список всех баз и систем
-                var universePath = "universe.ini";
-
-                using (StreamReader reader = new StreamReader(universePath))
+                using (StreamReader reader = new StreamReader("universe.ini"))
                 {
-                    string line;
-                    int countBase = 0;
-                    int countSystem = 0;
-                    bool systemState = false;
-                    bool baseState = false;
-                    string baseId = string.Empty;
-                    string systemId = string.Empty;
+                    var line = string.Empty;
+                    bool systemState = false, baseState = false;
                     while ((line = reader.ReadLine()) != null)
                     {
                         if (!string.IsNullOrEmpty(line))
                         {
-                            //определяю заголовок это или нет
                             if (line.Contains("[system]"))
                             {
-                                countSystem++;
                                 systemState = true;
                                 baseState = false;
                             }
-                            //определяю заголовок это или нет
                             if (line.Contains("[Base]"))
                             {
-                                countBase++;
                                 systemState = false;
                                 baseState = true;
                             }
                             if (systemState)
-                            {
-                                if (line.Contains("nickname"))
-                                {
-                                    systemId = (line.Substring(10, line.Length - 10)).Trim().ToLower();
-                                    UniverseSystemsData.Add(systemId, new UniverseSystem()
-                                    {
-                                        Id = systemId
-                                    });
-                                }
-                                if (line.Contains("strid_name"))
-                                {
-                                    var dll_name = (line.Substring(12, line.Length - 12)).Trim();
-                                    UniverseSystemsData[systemId].DLL_Name = dll_name;
-                                    var names = GetNameSystem(logService, int.Parse(dll_name));
-                                    foreach (var name in names)
-                                    {
-                                        UniverseSystemsData[systemId].Name += name + " | ";
-                                    }
-                                }
-                                if (line.Contains("visit"))
-                                {
-                                    var visit = (line.Substring(7, line.Length - 7)).Trim();
-                                    UniverseSystemsData[systemId].Visit = int.Parse(visit);
-                                }
-                                if (line.Contains("ids_info"))
-                                {
-                                    var dll_ids_name = (line.Substring(10, line.Length - 10)).Trim();
-                                    UniverseSystemsData[systemId].DLL_InfoCard = dll_ids_name;
-                                }
-                                if (line.Contains("file"))
-                                {
-                                    var file = (line.Substring(6, line.Length - 6)).Trim();
-                                    UniverseSystemsData[systemId].INI = file;
-                                    StreamReader sr = new StreamReader(UniverseSystemsData[systemId].INI);
-                                    var data = sr.ReadLine();
-                                    var Object = false;
-                                    var countObject = 0;
-                                    while (data != null)
-                                    {
-                                        if (data.Contains("Object"))
-                                        {
-                                            Object = true;
-                                            countObject++;
-                                            if(UniverseSystemsData[systemId].Objects == null)
-                                                UniverseSystemsData[systemId].Objects = new List<ObjectSystem>();
-                                        }
-
-                                        if(Object)
-                                        {
-                                            if(data.Contains("nickname"))
-                                            {
-                                                var id_name = (data.Substring(10, data.Length - 10)).Trim();
-                                                UniverseSystemsData[systemId].Objects.Add(new ObjectSystem()
-                                                {
-                                                    ID = id_name
-                                                });
-                                            }
-                                            if (data.Contains("pos ="))
-                                            {
-                                                var position = (data.Substring(5, data.Length - 5)).Trim();
-                                                if(position.Contains(";"))
-                                                    position = (position.Substring(0, position.IndexOf(';')).Trim());
-                                                int[] pos = position.Split(',').Select(n =>
-                                                {
-                                                    int val = 0;
-                                                    n = n.Trim();
-                                                    var state = int.TryParse(n, out val);
-                                                    if (state == false)
-                                                    {
-                                                        double td = 0;
-                                                        if (n.Contains('.'))
-                                                        {
-                                                            IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
-                                                            td = double.Parse(n, formatter);
-                                                            int i = (int)Math.Round(td, MidpointRounding.AwayFromZero);
-                                                            val = i;
-                                                            return val;
-                                                        }
-                                                        else
-                                                        {
-                                                            File.AppendAllText("log.txt", "Error Parse Position - " + position + " - " + file + "\n");
-                                                            return 0;
-                                                        }
-                                                    }
-                                                    else return val;
-                                                }).ToArray();
-                                                UniverseSystemsData[systemId].Objects[countObject - 1].Pos = pos;
-                                            }
-                                            if(data.Contains("base ="))
-                                            {
-                                                var baseID = (data.Substring(6, data.Length - 6)).Trim();
-                                                UniverseSystemsData[systemId].Objects[countObject - 1].BaseID = baseID;
-                                            }
-                                            if (data.Contains("ids_name ="))
-                                            {
-                                                var idsName = (data.Substring(10, data.Length - 10)).Trim();
-                                                UniverseSystemsData[systemId].Objects[countObject - 1].IdsName = idsName;
-                                            }
-                                        }
-
-                                        data = sr.ReadLine();
-                                    }
-                                }
-                            }
+                                GetSystemDataToFile(line, logService);
                             if (baseState)
-                            {
-                                if (line.Contains("nickname"))
-                                {
-                                    baseId = (line.Substring(10, line.Length - 10)).Trim().ToLower();
-                                    UniverseBasesData.Add(baseId, new UniverseBase()
-                                    {
-                                        Id = baseId
-                                    });
-                                }
-                                if (line.Contains("strid_name"))
-                                {
-                                    var dll_name = (line.Substring(12, line.Length - 12)).Trim();
-                                    if (dll_name.Contains(";"))
-                                        dll_name = dll_name.Substring(0, dll_name.IndexOf(';'));
-                                    UniverseBasesData[baseId].DLL_Name = dll_name;
-                                    var names = GetNameSystem(logService, int.Parse(dll_name));
-                                    foreach (var name in names)
-                                    {
-                                        UniverseBasesData[baseId].Name += name + " | ";
-                                    }
-                                }
-                            }
+                                GetBaseDataToFile(line, logService);
                         }
                     }
                 }
-
-                logService.LogEvent("Список баз определён");
-
                 var resultDataSystems = new Dictionary<string, UniverseSystem>();
                 int resultCountSystem = 0;
 
@@ -236,21 +96,168 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         if (UniverseSystemsData[dirName].Name.Length == 0)
                             blockInfo.Items.Add(UniverseSystemsData[dirName].Id);
                         else
-                            blockInfo.Items.Add(UniverseSystemsData[dirName].Name);
+                            blockInfo.Items.Add(UniverseSystemsData[dirName].Id + " | " + UniverseSystemsData[dirName].Name);
                         SystemsID.Add(UniverseSystemsData[dirName].Id);
                     }
                     else
                     {
                         resultCountSystem++;
-                        logService.ErrorLogEvent("[" + resultCountSystem + "]  " + dirName + " - не является системой...");
+                        logService.ErrorWarningEvent("[" + resultCountSystem + "]  " + dirName + " - не является системой...");
                     }
                 }
+
                 blockInfo.SelectedIndex = 0;
                 logService.LogEvent("Список систем определён");
             }
             catch (Exception exception)
             {
                 logService.ErrorLogEvent(exception.Message);
+            }
+        }
+
+        private void GetSystemDataToFile(string line, LogService logService)
+        {
+            if (line.Contains("nickname"))
+            {
+                SystemID = (line.Substring(10, line.Length - 10)).Trim().ToLower();
+                UniverseSystemsData.Add(SystemID, new UniverseSystem()
+                {
+                    Id = SystemID
+                });
+            }
+            if (line.Contains("strid_name"))
+            {
+                var dll_name = (line.Substring(12, line.Length - 12)).Trim();
+                UniverseSystemsData[SystemID].DLL_Name = dll_name;
+                var names = GetNameSystem(logService, int.Parse(dll_name));
+                foreach (var name in names)
+                {
+                    UniverseSystemsData[SystemID].Name += name + " | ";
+                }
+            }
+            if (line.Contains("visit"))
+            {
+                var visit = (line.Substring(7, line.Length - 7)).Trim();
+                UniverseSystemsData[SystemID].Visit = int.Parse(visit);
+            }
+            if (line.Contains("ids_info"))
+            {
+                var dll_ids_name = (line.Substring(10, line.Length - 10)).Trim();
+                UniverseSystemsData[SystemID].DLL_InfoCard = dll_ids_name;
+            }
+            if (line.Contains("file"))
+            {
+                var file = (line.Substring(6, line.Length - 6)).Trim();
+                UniverseSystemsData[SystemID].INI = file;
+                GetSystemInfo(SystemID, logService);
+            }
+            if (line.Contains("NavMapScale"))
+            {
+                var nav = (line.Substring(13, line.Length - 13)).Trim();
+                IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
+                UniverseSystemsData[SystemID].NavMapScale = double.Parse(nav, formatter);
+            }
+        }
+
+        private void GetBaseDataToFile(string line, LogService logService)
+        {
+            if (line.Contains("nickname"))
+            {
+                BaseId = (line.Substring(10, line.Length - 10)).Trim().ToLower();
+                UniverseBasesData.Add(BaseId, new UniverseBase()
+                {
+                    Id = BaseId
+                });
+            }
+            if (line.Contains("strid_name"))
+            {
+                var dll_name = (line.Substring(12, line.Length - 12)).Trim();
+                if (dll_name.Contains(";"))
+                    dll_name = dll_name.Substring(0, dll_name.IndexOf(';'));
+                UniverseBasesData[BaseId].DLL_Name = dll_name;
+                var names = GetNameSystem(logService, int.Parse(dll_name));
+                foreach (var name in names)
+                {
+                    UniverseBasesData[BaseId].Name += name + " | ";
+                }
+            }
+        }
+
+        /// <summary>
+        /// Читает конфигурационный файл системы
+        /// </summary>
+        /// <param name="systemId">ID системы</param>
+
+        private void GetSystemInfo(string systemId, LogService logService)
+        {
+            var sr = new StreamReader(UniverseSystemsData[systemId].INI);
+            var data = sr.ReadLine();
+            var Object = false;
+            while (data != null)
+            {
+                if (data.Contains("Object"))
+                {
+                    Object = true;
+                    if (UniverseSystemsData[systemId].Objects == null)
+                        UniverseSystemsData[systemId].Objects = new List<ObjectSystem>();
+                }
+                if (Object)
+                {
+                    if (data.Contains("nickname"))
+                    {
+                        var id_name = (data.Substring(10, data.Length - 10)).Trim();
+                        UniverseSystemsData[systemId].Objects.Add(new ObjectSystem()
+                        {
+                            ID = id_name
+                        });
+                    }
+                    if (data.Contains("pos ="))
+                    {
+                        var position = (data.Substring(5, data.Length - 5)).Trim();
+                        if (position.Contains(";"))
+                            position = (position.Substring(0, position.IndexOf(';')).Trim());
+                        int[] pos = position.Split(',').Select(n =>
+                        {
+                            int val = 0;
+                            n = n.Trim();
+                            var state = int.TryParse(n, out val);
+                            if (state == false)
+                            {
+                                double td = 0;
+                                if (n.Contains('.'))
+                                {
+                                    IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
+                                    td = double.Parse(n, formatter);
+                                    int i = (int)Math.Round(td, MidpointRounding.AwayFromZero);
+                                    val = i;
+                                    return val;
+                                }
+                                else
+                                {
+                                    File.AppendAllText("log.txt", "Error Parse Position - " + position + " - " + UniverseSystemsData[systemId].INI + "\n");
+                                    return 0;
+                                }
+                            }
+                            else return val;
+                        }).ToArray();
+                        if(pos == null)
+                        {
+                            logService.ErrorLogEvent(systemId);
+                        }
+                        else UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].Pos = pos;
+                    }
+                    if (data.Contains("base ="))
+                    {
+                        var baseID = (data.Substring(6, data.Length - 6)).Trim();
+                        UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].BaseID = baseID;
+                    }
+                    if (data.Contains("ids_name ="))
+                    {
+                        var idsName = (data.Substring(10, data.Length - 10)).Trim();
+                        UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].IdsName = idsName;
+                    }
+                }
+                data = sr.ReadLine();
             }
         }
 

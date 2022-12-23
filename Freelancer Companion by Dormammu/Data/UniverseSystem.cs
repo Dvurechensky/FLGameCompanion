@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Freelancer_Companion_by_Dormammu.Data
 {
@@ -35,7 +36,23 @@ namespace Freelancer_Companion_by_Dormammu.Data
         /// <summary>
         /// НЕ работает(позиция на карте теперь в MultiUniverse)
         /// </summary>
-        public string NavMapScale { get; set; }
+        public double NavMapScale { get; set; }
+        /// <summary>
+        /// Итоговый радиус системы
+        /// </summary>
+        public int Radius
+        {
+            get
+            {
+                double val;
+                if (NavMapScale != 0)
+                {
+                    val = 131041.0 / NavMapScale;
+                }
+                else val = 131041.0;
+                return (int)Math.Round(val, MidpointRounding.AwayFromZero);
+            }
+        }
         /// <summary>
         /// НПС говорят название объекта
         /// </summary>
@@ -56,6 +73,10 @@ namespace Freelancer_Companion_by_Dormammu.Data
         /// Местоположение
         /// </summary>
         public int[] Pos { get; set; }
+        /// <summary>
+        /// Позиция на карте в App
+        /// </summary>
+        public int[] MapPos { get; set; }
         /// <summary>
         /// База ID
         /// </summary>

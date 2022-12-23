@@ -17,7 +17,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
         {
             Logger.BackColor = Color.LightGray;
             Logger.SelectionColor = Color.Black;
-            Logger.AppendText("-> " + message + Environment.NewLine);
+            Logger.AppendText("-----> " + message + Environment.NewLine);
             Logger.SelectionStart = Logger.TextLength;
             Logger.ScrollToCaret();
         }
@@ -26,7 +26,16 @@ namespace Freelancer_Companion_by_Dormammu.Services
         {
             Logger.BackColor = Color.LightGray;
             Logger.SelectionColor = Color.Red;
-            Logger.AppendText("-> " + message + Environment.NewLine);
+            Logger.AppendText("!~ " + message + Environment.NewLine);
+            Logger.SelectionStart = Logger.TextLength;
+            Logger.ScrollToCaret();
+        }
+
+        public void ErrorWarningEvent(string message)
+        {
+            Logger.BackColor = Color.LightGray;
+            Logger.SelectionColor = Color.DarkBlue;
+            Logger.AppendText("#~ " + message + Environment.NewLine);
             Logger.SelectionStart = Logger.TextLength;
             Logger.ScrollToCaret();
         }

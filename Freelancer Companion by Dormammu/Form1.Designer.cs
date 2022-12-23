@@ -95,6 +95,7 @@
             this.MinimumSize = new System.Drawing.Size(1310, 1035);
             this.Name = "FreelancerCompanionDvurechensky";
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Freelancer Companion";
             ((System.ComponentModel.ISupportInitialize)(this.Map)).EndInit();
             this.ResumeLayout(false);

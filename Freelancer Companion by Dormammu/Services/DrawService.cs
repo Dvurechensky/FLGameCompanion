@@ -74,9 +74,13 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// <param name="X">X</param>
         /// <param name="Y">Y</param>
         /// <param name="map">Карта</param>
-        public void DrawPoint(int X, int Y, Graphics map)
+        public void DrawPoint(int X, int Y, int width, int height, Graphics map)
         {
-            map.FillRectangle(Brushes.Red, X, Y, 3, 3);
+            int[] coords = ResetCoords(X, Y, width, height);
+            Rectangle rect = new Rectangle(coords[0], coords[1], 5, 5);
+            map.DrawRectangle(new Pen(Color.Red, .5f), rect);
+            Brush bb = new SolidBrush(Color.Red);
+            map.FillRectangle(bb, rect);
         }
 
         /// <summary>
@@ -86,15 +90,13 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// <param name="text">Текст</param>
         /// <param name="map">Карта</param>
         /// <param name="isYAxis">Выбор оси</param>
-        private void DrawText(Point point, string text, Graphics map, bool isYAxis = false)
+        public void DrawText(Point point, int width, int height, string text, Graphics map, bool isYAxis = false)
         {
             var fontFamily = new FontFamily("Arial");
             var font = new Font(fontFamily, 16, FontStyle.Bold, GraphicsUnit.Pixel);
             var size = map.MeasureString(text, font);
-            var location = isYAxis
-                ? new PointF(point.X + 1, point.Y - size.Height / 2)
-                : new PointF(point.X - size.Width / 2, point.Y + 1);
-            var rect = new RectangleF(location, size);
+            var coords = ResetCoords(point.X, point.Y, width, height);
+            var rect = new RectangleF(new Point(coords[0], coords[1]), size);
             map.DrawString(text, font, Brushes.Black, rect);
         }
 
@@ -125,6 +127,49 @@ namespace Freelancer_Companion_by_Dormammu.Services
             result[1] = new PointF(x2, y2);
             result[2] = new PointF(n.X - v1.Y * width, n.Y + v1.X * width);
             return result;
+        }
+
+        /// <summary>
+        /// Пересчитывает координаты
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <returns></returns>
+        private int[] ResetCoords(int X, int Y, int width, int height)
+        {
+            bool stateX = false;
+            bool stateY = false;
+            width = width / 2;
+            height = height / 2;
+
+            if (X < 0)
+            {
+                X += width;
+                stateX = true;
+            }
+            if (Y < 0)
+            {
+                Y += height;
+                stateY = true;
+            }
+
+            if (X > 0 && !stateX)
+            {
+                X += width;
+                stateX = true;
+            }
+            if (Y > 0 && !stateY)
+            {
+                Y += height;
+                stateY = true;
+            }
+            if (X == 0 && !stateX) X = width;
+            if (Y == 0 && !stateY) Y = height;
+
+            int[] coords = new int[2];
+            coords[0] = X;
+            coords[1] = Y;
+            return coords;
         }
     }
 }
