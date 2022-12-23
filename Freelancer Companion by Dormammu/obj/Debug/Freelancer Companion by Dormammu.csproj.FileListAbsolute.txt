@@ -49,3 +49,14 @@ E:\GITHUB\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\
 E:\GITHUB\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer Companion by Dormammu.csproj.CoreCompileInputs.cache
 E:\GITHUB\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer Companion by Dormammu.exe
 E:\GITHUB\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer Companion by Dormammu.pdb
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\bin\Debug\Freelancer Companion by Dormammu.exe.config
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\bin\Debug\Freelancer Companion by Dormammu.exe
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\bin\Debug\Freelancer Companion by Dormammu.pdb
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer Companion by Dormammu.csproj.AssemblyReference.cache
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer Companion by Dormammu.csproj.SuggestedBindingRedirects.cache
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer_Companion_by_Dormammu.FreelancerCompanionDvurechensky.resources
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer_Companion_by_Dormammu.Properties.Resources.resources
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer Companion by Dormammu.csproj.GenerateResource.cache
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer Companion by Dormammu.csproj.CoreCompileInputs.cache
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer Companion by Dormammu.exe
+K:\FREELANCER-COMPANION-BY-DORMAMMU\Freelancer Companion by Dormammu\obj\Debug\Freelancer Companion by Dormammu.pdb

@@ -21,6 +21,8 @@ namespace Freelancer_Companion_by_Dormammu
         private SystemService SystemService { get; set; }
         private List<ObjectSystem> ObjectPoints { get; set; } 
         private Bitmap ImageMap { get; set; }
+        private double KeyResize { get; set; }
+        private string CurrentSystem { get; set; }
 
         public FreelancerCompanionDvurechensky()
         {
@@ -70,41 +72,30 @@ namespace Freelancer_Companion_by_Dormammu
             var comboBox = (ComboBox)sender;
             flowLayoutPanelNames.Controls.Clear();
             ObjectPoints = new List<ObjectSystem>();
-            var listSystem = SystemService.SystemsID[comboBox.SelectedIndex];
-            var kef = (double)500 / SystemService.UniverseSystemsData[listSystem].Radius;
+            CurrentSystem = SystemService.SystemsID[comboBox.SelectedIndex];
+            KeyResize = (double)500 / SystemService.UniverseSystemsData[CurrentSystem].Radius;
             ImageMap = new Bitmap(Map.Width, Map.Height);
-            var tmpListCoords = new List<int>();
-            using (Graphics gr = Graphics.FromImage(ImageMap))
+
+
+            var listMaxTmp = new List<int>();
+            foreach(var sys in SystemService.SystemsID)
             {
-                foreach (var baseID in SystemService.UniverseSystemsData[listSystem].Objects.FindAll((baseId) => baseId.BaseID != null).ToArray())
+                var radius = SystemService.UniverseSystemsData[sys].Radius;
+
+                foreach (var bases in SystemService.UniverseSystemsData[sys].Objects)
                 {
-                    int x = (int)Math.Round(kef * baseID.Pos[0], MidpointRounding.AwayFromZero);
-                    int y = (int)Math.Round(kef * baseID.Pos[2], MidpointRounding.AwayFromZero);
-                    int[] mapPos = new int[3];
-                    mapPos[0] = x;
-                    mapPos[1] = y;
-                    mapPos[2] = baseID.Pos[1];
-                    baseID.MapPos = mapPos;
-                    ObjectPoints.Add(baseID);
-
-                    //Формирую вывод UI
-                    var button = new Button();
-                    button.Width = 180;
-                    button.Height = 30;
-                    button.MouseEnter += Base_MouseEnter;
-                    button.MouseLeave += Base_MouseLeave;
-                    button.Name = baseID.BaseID;
-                    var nameTmp = baseID.BaseID.ToLower();
-                    button.Text = (!string.IsNullOrEmpty(SystemService.UniverseBasesData[nameTmp].Name)) ? SystemService.UniverseBasesData[nameTmp].Name : baseID.ID;
-                    flowLayoutPanelNames.Controls.Add(button);
-
-                    DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.Red);
+                    listMaxTmp.Add(bases.Pos[0]);
+                    listMaxTmp.Add(bases.Pos[1]);
+                    listMaxTmp.Add(bases.Pos[2]);
                 }
-
-                //DrawService.DrawPoint(500, 889, Map.Width, Map.Height, gr);
-
-                Map.Image = ImageMap;
+                var maxCoordSystem = listMaxTmp.Max();
+                if(maxCoordSystem > radius)
+                {
+                    LogService.LogEvent("Упс");
+                }
             }
+
+            
         }
 
         private void Base_MouseLeave(object sender, EventArgs e)
@@ -134,6 +125,52 @@ namespace Freelancer_Companion_by_Dormammu
                 DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.Black, 15);
                 Map.Image = ImageMap;
             }
+        }
+
+        private void checkBoxBases_CheckedChanged(object sender, EventArgs e)
+        {
+            var checkBoxBases = (CheckBox)sender;
+            using (Graphics gr = Graphics.FromImage(ImageMap))
+            {
+                foreach (var baseID in SystemService.UniverseSystemsData[CurrentSystem].Objects.FindAll((baseId) => baseId.BaseID != null).ToArray())
+                {
+                    int x = (int)Math.Round(KeyResize * baseID.Pos[0], MidpointRounding.AwayFromZero);
+                    int y = (int)Math.Round(KeyResize * baseID.Pos[2], MidpointRounding.AwayFromZero);
+                    int[] mapPos = new int[3];
+                    mapPos[0] = x;
+                    mapPos[1] = y;
+                    mapPos[2] = baseID.Pos[1];
+                    baseID.MapPos = mapPos;
+                    ObjectPoints.Add(baseID);
+
+                    //Формирую вывод UI
+                    var button = new Button();
+                    button.Width = 180;
+                    button.Height = 30;
+                    button.MouseEnter += Base_MouseEnter;
+                    button.MouseLeave += Base_MouseLeave;
+                    button.Name = baseID.BaseID;
+                    var nameTmp = baseID.BaseID.ToLower();
+                    button.Text = (!string.IsNullOrEmpty(SystemService.UniverseBasesData[nameTmp].Name)) ? SystemService.UniverseBasesData[nameTmp].Name : baseID.ID;
+                    flowLayoutPanelNames.Controls.Add(button);
+
+                    //рисую или стираю точки на карте
+                    if (checkBoxBases.Checked == true)
+                    {
+                        DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.Red);
+                        LogService.LogEvent("Включён показ всех баз...");
+                    }
+                    else
+                        DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.White);
+                }
+                Map.Image = ImageMap;
+            }
+        }
+
+        private void checkBoxContainers_CheckedChanged(object sender, EventArgs e)
+        {
+            var checkBoxBases = (CheckBox)sender;
+            LogService.LogEvent(checkBoxBases.Checked.ToString());
         }
     }
 }
