@@ -74,12 +74,12 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// <param name="X">X</param>
         /// <param name="Y">Y</param>
         /// <param name="map">Карта</param>
-        public void DrawPoint(int X, int Y, int width, int height, Graphics map)
+        public void DrawPoint(int X, int Y, int width, int height, Graphics map, Color color, int boxW = 5, int boxH = 5)
         {
             int[] coords = ResetCoords(X, Y, width, height);
-            Rectangle rect = new Rectangle(coords[0], coords[1], 5, 5);
-            map.DrawRectangle(new Pen(Color.Red, .5f), rect);
-            Brush bb = new SolidBrush(Color.Red);
+            Rectangle rect = new Rectangle(coords[0], coords[1], boxW, boxH);
+            map.DrawRectangle(new Pen(color, .5f), rect);
+            Brush bb = new SolidBrush(color);
             map.FillRectangle(bb, rect);
         }
 
@@ -90,14 +90,14 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// <param name="text">Текст</param>
         /// <param name="map">Карта</param>
         /// <param name="isYAxis">Выбор оси</param>
-        public void DrawText(Point point, int width, int height, string text, Graphics map, bool isYAxis = false)
+        public void DrawText(Point point, int width, int height, string text, Graphics map, Brush color, int sizeText, bool isYAxis = false)
         {
             var fontFamily = new FontFamily("Arial");
-            var font = new Font(fontFamily, 16, FontStyle.Bold, GraphicsUnit.Pixel);
+            var font = new Font(fontFamily, sizeText, FontStyle.Bold, GraphicsUnit.Pixel);
             var size = map.MeasureString(text, font);
             var coords = ResetCoords(point.X, point.Y, width, height);
             var rect = new RectangleF(new Point(coords[0], coords[1]), size);
-            map.DrawString(text, font, Brushes.Black, rect);
+            map.DrawString(text, font, color, rect);
         }
 
         /// <summary>

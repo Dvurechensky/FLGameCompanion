@@ -20,6 +20,7 @@ namespace Freelancer_Companion_by_Dormammu
         private DrawService DrawService { get; set; }
         private SystemService SystemService { get; set; }
         private List<ObjectSystem> ObjectPoints { get; set; } 
+        private Bitmap ImageMap { get; set; }
 
         public FreelancerCompanionDvurechensky()
         {
@@ -67,12 +68,13 @@ namespace Freelancer_Companion_by_Dormammu
         private void comboBoxSystems_SelectedIndexChanged(object sender, System.EventArgs e)
         {
             var comboBox = (ComboBox)sender;
+            flowLayoutPanelNames.Controls.Clear();
             ObjectPoints = new List<ObjectSystem>();
             var listSystem = SystemService.SystemsID[comboBox.SelectedIndex];
             var kef = (double)500 / SystemService.UniverseSystemsData[listSystem].Radius;
-            Bitmap Pix = new Bitmap(Map.Width, Map.Height);
+            ImageMap = new Bitmap(Map.Width, Map.Height);
             var tmpListCoords = new List<int>();
-            using (Graphics gr = Graphics.FromImage(Pix))
+            using (Graphics gr = Graphics.FromImage(ImageMap))
             {
                 foreach (var baseID in SystemService.UniverseSystemsData[listSystem].Objects.FindAll((baseId) => baseId.BaseID != null).ToArray())
                 {
@@ -84,15 +86,54 @@ namespace Freelancer_Companion_by_Dormammu
                     mapPos[2] = baseID.Pos[1];
                     baseID.MapPos = mapPos;
                     ObjectPoints.Add(baseID);
-                    DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr);
+
+                    //Формирую вывод UI
+                    var button = new Button();
+                    button.Width = 180;
+                    button.Height = 30;
+                    button.MouseEnter += Base_MouseEnter;
+                    button.MouseLeave += Base_MouseLeave;
+                    button.Name = baseID.BaseID;
+                    var nameTmp = baseID.BaseID.ToLower();
+                    button.Text = (!string.IsNullOrEmpty(SystemService.UniverseBasesData[nameTmp].Name)) ? SystemService.UniverseBasesData[nameTmp].Name : baseID.ID;
+                    flowLayoutPanelNames.Controls.Add(button);
+
+                    DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.Red);
                 }
 
                 //DrawService.DrawPoint(500, 889, Map.Width, Map.Height, gr);
 
-                Map.Image = Pix;
+                Map.Image = ImageMap;
             }
+        }
 
-            LogService.LogEvent("");
+        private void Base_MouseLeave(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var obj = ObjectPoints.Find((baseEl) => baseEl.BaseID == button.Name);
+            var name = (string.IsNullOrEmpty(obj.NameBase)) ? button.Name : obj.NameBase;
+            //сделать точку обычной
+            using (Graphics gr = Graphics.FromImage(ImageMap))
+            {
+                DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.White, 15);
+                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.White, 15, 15);
+                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.Red);
+                Map.Image = ImageMap;
+            }
+        }
+
+        private void Base_MouseEnter(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var obj = ObjectPoints.Find((baseEl) => baseEl.BaseID == button.Name);
+            var name = (string.IsNullOrEmpty(obj.NameBase)) ? button.Name : obj.NameBase;
+            //сделать точку крупнее
+            using (Graphics gr = Graphics.FromImage(ImageMap))
+            {
+                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.Red, 15, 15);
+                DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.Black, 15);
+                Map.Image = ImageMap;
+            }
         }
     }
 }

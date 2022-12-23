@@ -32,6 +32,7 @@
             this.comboBoxSystems = new System.Windows.Forms.ComboBox();
             this.labelSystemss = new System.Windows.Forms.Label();
             this.LoggerRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.flowLayoutPanelNames = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.Map)).BeginInit();
             this.SuspendLayout();
             // 
@@ -73,11 +74,19 @@
             // LoggerRichTextBox
             // 
             this.LoggerRichTextBox.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LoggerRichTextBox.Location = new System.Drawing.Point(1006, 34);
+            this.LoggerRichTextBox.Location = new System.Drawing.Point(1006, 432);
             this.LoggerRichTextBox.Name = "LoggerRichTextBox";
-            this.LoggerRichTextBox.Size = new System.Drawing.Size(386, 964);
+            this.LoggerRichTextBox.Size = new System.Drawing.Size(386, 566);
             this.LoggerRichTextBox.TabIndex = 4;
             this.LoggerRichTextBox.Text = "";
+            // 
+            // flowLayoutPanelNames
+            // 
+            this.flowLayoutPanelNames.AutoScroll = true;
+            this.flowLayoutPanelNames.Location = new System.Drawing.Point(1184, 35);
+            this.flowLayoutPanelNames.Name = "flowLayoutPanelNames";
+            this.flowLayoutPanelNames.Size = new System.Drawing.Size(208, 391);
+            this.flowLayoutPanelNames.TabIndex = 5;
             // 
             // FreelancerCompanionDvurechensky
             // 
@@ -85,6 +94,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
             this.ClientSize = new System.Drawing.Size(1394, 996);
+            this.Controls.Add(this.flowLayoutPanelNames);
             this.Controls.Add(this.LoggerRichTextBox);
             this.Controls.Add(this.labelSystemss);
             this.Controls.Add(this.comboBoxSystems);
@@ -108,6 +118,7 @@
         private System.Windows.Forms.ComboBox comboBoxSystems;
         private System.Windows.Forms.Label labelSystemss;
         private System.Windows.Forms.RichTextBox LoggerRichTextBox;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelNames;
     }
 }
 
