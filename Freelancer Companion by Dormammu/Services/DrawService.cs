@@ -26,7 +26,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// <param name="start">Начало</param>
         /// <param name="end">Конец</param>
         /// <param name="map">Карта</param>
-        public void DrawXAxis(Point start, Point end, Graphics map)
+        public void DrawXAxis(Point start, Point end, Graphics map, bool arrow = true)
         {
             //Деления в положительном направлении оси
             for (int i = BlockLength; i < end.X - ArrowLength; i += BlockLength)
@@ -41,7 +41,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
             //Ось
             map.DrawLine(Pens.Black, start, end);
             //Стрелка
-            map.DrawLines(Pens.Black, GetArrow(start.X, start.Y, end.X, end.Y, ArrowLength));
+            if(arrow) map.DrawLines(Pens.Black, GetArrow(start.X, start.Y, end.X, end.Y, ArrowLength));
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// <param name="start">Начало</param>
         /// <param name="end">Конец</param>
         /// <param name="map">Карта</param>
-        public void DrawYAxis(Point start, Point end, Graphics map)
+        public void DrawYAxis(Point start, Point end, Graphics map, bool arrow = true)
         {
             //Деления в отрицательном направлении оси
             for (int i = BlockLength; i < start.Y; i += BlockLength)
@@ -65,7 +65,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
             //Ось
             map.DrawLine(Pens.Black, start, end);
             //Стрелка
-            map.DrawLines(Pens.Black, GetArrow(start.X, start.Y, end.X, end.Y, ArrowLength));
+            if (arrow) map.DrawLines(Pens.Black, GetArrow(start.X, start.Y, end.X, end.Y, ArrowLength));
         }
 
         /// <summary>

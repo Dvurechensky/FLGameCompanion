@@ -93,5 +93,13 @@ namespace Freelancer_Companion_by_Dormammu.Data
         /// Принадлежность объекта
         /// </summary>
         public string Archetype { get; set; }
+        /// <summary>
+        /// Сюрприз ли это
+        /// </summary>
+        public string Loadout { get; set; }
+        /// <summary>
+        /// Куда ведёт портал
+        /// </summary>
+        public string Goto { get; set; }
     }
 }

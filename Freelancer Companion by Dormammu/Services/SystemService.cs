@@ -25,6 +25,8 @@ namespace Freelancer_Companion_by_Dormammu.Services
         public Dictionary<string, UniverseSystem> UniverseSystemsData { get; set; }
         public Dictionary<string, UniverseBase> UniverseBasesData { get; set; }
         public List<string> SystemsID { get; set; }
+        public Dictionary<string, string> SystemNamesID { get; set; }
+        public List<string> SupriseID { get; set; }
         public string IDCurrent { get; set; }
         private string BaseId { get; set; }
         private string SystemID { get; set; }
@@ -33,7 +35,9 @@ namespace Freelancer_Companion_by_Dormammu.Services
         {
             UniverseSystemsData = new Dictionary<string, UniverseSystem>();
             UniverseBasesData = new Dictionary<string, UniverseBase>();
+            SystemNamesID = new Dictionary<string, string>();
             SystemsID = new List<string>();
+            SupriseID = new List<string>();
         }
 
         /// <summary>
@@ -55,9 +59,27 @@ namespace Freelancer_Companion_by_Dormammu.Services
         {
             try
             {   File.Delete("log.txt"); //чищу логи
+                GetAllSystems();
                 var dirInfoSystems = new DirectoryInfo("SYSTEMS");
                 var dirInfoArray = dirInfoSystems.GetDirectories();
-                using (StreamReader reader = new StreamReader("universe.ini"))
+                //получаю список грузов
+                using (var reader = new StreamReader("loadouts.ini"))
+                {
+                    var line = string.Empty;
+                    bool load = false;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (!string.IsNullOrEmpty(line))
+                        {
+                            line = line.ToLower();
+                            if (line.Contains("[loadout]"))
+                                load = true;
+                            if(load) GetLoadout(line, logService);
+                        }
+                    }
+                }
+
+                using (var reader = new StreamReader("universe.ini"))
                 {
                     var line = string.Empty;
                     bool systemState = false, baseState = false;
@@ -82,6 +104,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         }
                     }
                 }
+
                 var resultDataSystems = new Dictionary<string, UniverseSystem>();
                 int resultCountSystem = 0;
 
@@ -96,7 +119,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         if (UniverseSystemsData[dirName].Name.Length == 0)
                             blockInfo.Items.Add(UniverseSystemsData[dirName].Id);
                         else
-                            blockInfo.Items.Add(UniverseSystemsData[dirName].Id + " | " + UniverseSystemsData[dirName].Name);
+                            blockInfo.Items.Add(UniverseSystemsData[dirName].Name + " | " + UniverseSystemsData[dirName].Id);
                         SystemsID.Add(UniverseSystemsData[dirName].Id);
                     }
                     else
@@ -115,6 +138,15 @@ namespace Freelancer_Companion_by_Dormammu.Services
             }
         }
 
+        private void GetLoadout(string line, LogService logService)
+        {
+            if (line.Contains("nickname"))
+            {
+                var nick = (line.Substring(10, line.Length - 10)).Trim().ToLower();
+                SupriseID.Add(nick);
+            }
+        }
+
         private void GetSystemDataToFile(string line, LogService logService)
         {
             if (line.Contains("nickname"))
@@ -129,11 +161,11 @@ namespace Freelancer_Companion_by_Dormammu.Services
             {
                 var dll_name = (line.Substring(12, line.Length - 12)).Trim();
                 UniverseSystemsData[SystemID].DLL_Name = dll_name;
-                var names = GetNameSystem(logService, int.Parse(dll_name));
-                foreach (var name in names)
-                {
-                    UniverseSystemsData[SystemID].Name += name + " | ";
-                }
+                var id = SystemID.ToLower();
+                string name = string.Empty;
+                if (SystemNamesID.ContainsKey(id)) name = SystemNamesID[id];
+                else name = id;
+                UniverseSystemsData[SystemID].Name = name;
             }
             if (line.Contains("visit"))
             {
@@ -201,6 +233,10 @@ namespace Freelancer_Companion_by_Dormammu.Services
                     if (UniverseSystemsData[systemId].Objects == null)
                         UniverseSystemsData[systemId].Objects = new List<ObjectSystem>();
                 }
+                if (data.Contains("Zone"))
+                {
+                    Object = false;
+                }
                 if (Object)
                 {
                     if (data.Contains("nickname"))
@@ -256,6 +292,27 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         var idsName = (data.Substring(10, data.Length - 10)).Trim();
                         UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].IdsName = idsName;
                     }
+                    if (data.Contains("archetype ="))
+                    {
+                        var archetype = (data.Substring(13, data.Length - 13)).Trim();
+                        UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].Archetype = archetype;
+                    }
+                    if (data.Contains("loadout ="))
+                    {
+                        var loadout = (data.Substring(11, data.Length - 11)).Trim();
+                        UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].Loadout = loadout;
+                    }
+                    if (data.Contains("goto =") && !data.Contains(';'))
+                    {
+                        var loadout = (data.Substring(6, data.Length - 6)).Trim().ToLower();
+                        var idS = loadout.Substring(0, loadout.IndexOf(','));
+                        if(!SystemNamesID.ContainsKey(idS))
+                        {
+                            int y = 8;
+                        }
+                        var nameS = SystemNamesID[idS];
+                        UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].Goto = nameS;
+                    }
                 }
                 data = sr.ReadLine();
             }
@@ -282,6 +339,24 @@ namespace Freelancer_Companion_by_Dormammu.Services
                 logService.ErrorLogEvent("id: " + id + " - не содержит названия");
             }
             return names;
+        }
+
+        private void GetAllSystems()
+        {
+            //получаю список систем
+            using (var reader = new StreamReader("systems.ini"))
+            {
+                var line = string.Empty;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        var idS = line.Substring(0, line.IndexOf('='));
+                        var nameS = line.Substring(line.IndexOf('=') + 1);
+                        SystemNamesID.Add(idS, nameS);
+                    }
+                }
+            }
         }
     }
 }
