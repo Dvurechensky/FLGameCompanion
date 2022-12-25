@@ -48,7 +48,7 @@
             this.Map.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Map.Location = new System.Drawing.Point(0, -2);
             this.Map.Name = "Map";
-            this.Map.Size = new System.Drawing.Size(1000, 1000);
+            this.Map.Size = new System.Drawing.Size(800, 800);
             this.Map.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.Map.TabIndex = 1;
             this.Map.TabStop = false;
@@ -61,7 +61,7 @@
             this.comboBoxSystems.DisplayMember = "Add";
             this.comboBoxSystems.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxSystems.FormattingEnabled = true;
-            this.comboBoxSystems.Location = new System.Drawing.Point(1006, 4);
+            this.comboBoxSystems.Location = new System.Drawing.Point(806, 1);
             this.comboBoxSystems.Name = "comboBoxSystems";
             this.comboBoxSystems.Size = new System.Drawing.Size(426, 24);
             this.comboBoxSystems.TabIndex = 2;
@@ -75,7 +75,7 @@
             this.labelSystemss.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.labelSystemss.Font = new System.Drawing.Font("MS PGothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelSystemss.ForeColor = System.Drawing.Color.FloralWhite;
-            this.labelSystemss.Location = new System.Drawing.Point(1438, 4);
+            this.labelSystemss.Location = new System.Drawing.Point(1238, 1);
             this.labelSystemss.Name = "labelSystemss";
             this.labelSystemss.Size = new System.Drawing.Size(44, 21);
             this.labelSystemss.TabIndex = 3;
@@ -85,9 +85,9 @@
             // LoggerRichTextBox
             // 
             this.LoggerRichTextBox.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LoggerRichTextBox.Location = new System.Drawing.Point(1006, 436);
+            this.LoggerRichTextBox.Location = new System.Drawing.Point(806, 360);
             this.LoggerRichTextBox.Name = "LoggerRichTextBox";
-            this.LoggerRichTextBox.Size = new System.Drawing.Size(476, 550);
+            this.LoggerRichTextBox.Size = new System.Drawing.Size(476, 438);
             this.LoggerRichTextBox.TabIndex = 4;
             this.LoggerRichTextBox.Text = "";
             // 
@@ -96,16 +96,16 @@
             this.flowLayoutPanelNames.AutoScroll = true;
             this.flowLayoutPanelNames.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanelNames.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.flowLayoutPanelNames.Location = new System.Drawing.Point(1006, 111);
+            this.flowLayoutPanelNames.Location = new System.Drawing.Point(806, 107);
             this.flowLayoutPanelNames.Name = "flowLayoutPanelNames";
-            this.flowLayoutPanelNames.Size = new System.Drawing.Size(476, 319);
+            this.flowLayoutPanelNames.Size = new System.Drawing.Size(476, 247);
             this.flowLayoutPanelNames.TabIndex = 5;
             // 
             // checkBoxBases
             // 
             this.checkBoxBases.AutoSize = true;
             this.checkBoxBases.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxBases.Location = new System.Drawing.Point(1006, 35);
+            this.checkBoxBases.Location = new System.Drawing.Point(806, 31);
             this.checkBoxBases.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxBases.Name = "checkBoxBases";
             this.checkBoxBases.Size = new System.Drawing.Size(128, 24);
@@ -118,7 +118,7 @@
             // 
             this.checkBoxContainers.AutoSize = true;
             this.checkBoxContainers.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxContainers.Location = new System.Drawing.Point(1006, 63);
+            this.checkBoxContainers.Location = new System.Drawing.Point(806, 59);
             this.checkBoxContainers.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxContainers.Name = "checkBoxContainers";
             this.checkBoxContainers.Size = new System.Drawing.Size(175, 24);
@@ -131,7 +131,7 @@
             // 
             this.checkBoxAll.AutoSize = true;
             this.checkBoxAll.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxAll.Location = new System.Drawing.Point(1211, 35);
+            this.checkBoxAll.Location = new System.Drawing.Point(1011, 31);
             this.checkBoxAll.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAll.Name = "checkBoxAll";
             this.checkBoxAll.Size = new System.Drawing.Size(117, 24);
@@ -144,7 +144,7 @@
             // 
             this.checkBoxHoll.AutoSize = true;
             this.checkBoxHoll.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxHoll.Location = new System.Drawing.Point(1211, 63);
+            this.checkBoxHoll.Location = new System.Drawing.Point(1011, 59);
             this.checkBoxHoll.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxHoll.Name = "checkBoxHoll";
             this.checkBoxHoll.Size = new System.Drawing.Size(152, 24);
@@ -155,7 +155,7 @@
             // 
             // textBoxX
             // 
-            this.textBoxX.Location = new System.Drawing.Point(1414, 35);
+            this.textBoxX.Location = new System.Drawing.Point(1214, 31);
             this.textBoxX.Name = "textBoxX";
             this.textBoxX.Size = new System.Drawing.Size(68, 20);
             this.textBoxX.TabIndex = 10;
@@ -164,7 +164,7 @@
             // 
             // textBoxY
             // 
-            this.textBoxY.Location = new System.Drawing.Point(1414, 61);
+            this.textBoxY.Location = new System.Drawing.Point(1214, 57);
             this.textBoxY.Name = "textBoxY";
             this.textBoxY.Size = new System.Drawing.Size(68, 20);
             this.textBoxY.TabIndex = 11;
@@ -173,7 +173,7 @@
             // 
             // textBoxZ
             // 
-            this.textBoxZ.Location = new System.Drawing.Point(1414, 87);
+            this.textBoxZ.Location = new System.Drawing.Point(1214, 83);
             this.textBoxZ.Name = "textBoxZ";
             this.textBoxZ.Size = new System.Drawing.Size(68, 20);
             this.textBoxZ.TabIndex = 12;
@@ -185,7 +185,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
-            this.ClientSize = new System.Drawing.Size(1494, 994);
+            this.ClientSize = new System.Drawing.Size(1294, 800);
             this.Controls.Add(this.textBoxZ);
             this.Controls.Add(this.textBoxY);
             this.Controls.Add(this.textBoxX);

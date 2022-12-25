@@ -82,12 +82,12 @@ namespace Freelancer_Companion_by_Dormammu
         {
             var comboBox = (ComboBox)sender;
             Map.Location = new Point(0, 0);
-            Map.Width = 1000;
-            Map.Height = 1000;
+            Map.Width = 800;
+            Map.Height = 800;
             flowLayoutPanelNames.Controls.Clear();
             ObjectPoints = new List<ObjectSystem>();
             CurrentSystem = SystemService.SystemsID[comboBox.SelectedIndex];
-            KeyResize = (double)500 / SystemService.UniverseSystemsData[CurrentSystem].Radius;
+            KeyResize = (double)400 / SystemService.UniverseSystemsData[CurrentSystem].Radius;
             ImageMap = new Bitmap(Map.Width, Map.Height);
             Map.Image = ImageMap;
             checkBoxContainers.Checked = false;
@@ -96,7 +96,7 @@ namespace Freelancer_Companion_by_Dormammu
             var listMaxTmp = new List<int>();
             var radius = SystemService.UniverseSystemsData[CurrentSystem].Radius;
 
-            foreach (var bases in SystemService.UniverseSystemsData[CurrentSystem].Objects.FindAll((objectEl) => !objectEl.ID.Contains("Zone_") && !objectEl.ID.ToLower().Contains("_sun")))
+            foreach (var bases in SystemService.UniverseSystemsData[CurrentSystem].Objects.FindAll((objectEl) => !objectEl.ID.ToLower().Contains("zone_") && !objectEl.ID.ToLower().Contains("_sun")))
             {
                 listMaxTmp.Add(Math.Abs(bases.Pos[0]));
                 listMaxTmp.Add(Math.Abs(bases.Pos[1]));
@@ -110,6 +110,7 @@ namespace Freelancer_Companion_by_Dormammu
                 KeyResize /= KeyOverSize;
                 KeyResize = Math.Round(KeyResize, 5);
             }
+            else KeyOverSize = 0;
 
             RepaintAxis();
             LogService.LogEvent($"Open [{comboBox.SelectedIndex + 1}] {comboBox.Text}");
