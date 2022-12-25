@@ -37,6 +37,9 @@
             this.checkBoxContainers = new System.Windows.Forms.CheckBox();
             this.checkBoxAll = new System.Windows.Forms.CheckBox();
             this.checkBoxHoll = new System.Windows.Forms.CheckBox();
+            this.textBoxX = new System.Windows.Forms.TextBox();
+            this.textBoxY = new System.Windows.Forms.TextBox();
+            this.textBoxZ = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.Map)).BeginInit();
             this.SuspendLayout();
             // 
@@ -93,9 +96,9 @@
             this.flowLayoutPanelNames.AutoScroll = true;
             this.flowLayoutPanelNames.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanelNames.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.flowLayoutPanelNames.Location = new System.Drawing.Point(1006, 92);
+            this.flowLayoutPanelNames.Location = new System.Drawing.Point(1006, 111);
             this.flowLayoutPanelNames.Name = "flowLayoutPanelNames";
-            this.flowLayoutPanelNames.Size = new System.Drawing.Size(476, 338);
+            this.flowLayoutPanelNames.Size = new System.Drawing.Size(476, 319);
             this.flowLayoutPanelNames.TabIndex = 5;
             // 
             // checkBoxBases
@@ -150,12 +153,42 @@
             this.checkBoxHoll.UseVisualStyleBackColor = true;
             this.checkBoxHoll.CheckedChanged += new System.EventHandler(this.checkBoxHoll_CheckedChanged);
             // 
+            // textBoxX
+            // 
+            this.textBoxX.Location = new System.Drawing.Point(1414, 35);
+            this.textBoxX.Name = "textBoxX";
+            this.textBoxX.Size = new System.Drawing.Size(68, 20);
+            this.textBoxX.TabIndex = 10;
+            this.textBoxX.Text = "X";
+            this.textBoxX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBoxY
+            // 
+            this.textBoxY.Location = new System.Drawing.Point(1414, 61);
+            this.textBoxY.Name = "textBoxY";
+            this.textBoxY.Size = new System.Drawing.Size(68, 20);
+            this.textBoxY.TabIndex = 11;
+            this.textBoxY.Text = "Y";
+            this.textBoxY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // textBoxZ
+            // 
+            this.textBoxZ.Location = new System.Drawing.Point(1414, 87);
+            this.textBoxZ.Name = "textBoxZ";
+            this.textBoxZ.Size = new System.Drawing.Size(68, 20);
+            this.textBoxZ.TabIndex = 12;
+            this.textBoxZ.Text = "Z";
+            this.textBoxZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // FreelancerCompanionDvurechensky
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
             this.ClientSize = new System.Drawing.Size(1494, 994);
+            this.Controls.Add(this.textBoxZ);
+            this.Controls.Add(this.textBoxY);
+            this.Controls.Add(this.textBoxX);
             this.Controls.Add(this.checkBoxHoll);
             this.Controls.Add(this.checkBoxAll);
             this.Controls.Add(this.checkBoxContainers);
@@ -189,6 +222,9 @@
         private System.Windows.Forms.CheckBox checkBoxContainers;
         private System.Windows.Forms.CheckBox checkBoxAll;
         private System.Windows.Forms.CheckBox checkBoxHoll;
+        private System.Windows.Forms.TextBox textBoxX;
+        private System.Windows.Forms.TextBox textBoxY;
+        private System.Windows.Forms.TextBox textBoxZ;
     }
 }
 

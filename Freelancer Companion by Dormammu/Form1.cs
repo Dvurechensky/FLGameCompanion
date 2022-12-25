@@ -191,6 +191,7 @@ namespace Freelancer_Companion_by_Dormammu
                         tooltip.SetToolTip(button, $"Z: [{baseID.Pos[1]}] X: [{baseID.Pos[0]}] Y: [{baseID.Pos[2]}]\n" + ((baseID.Archetype != null) ? baseID.Archetype : string.Empty));
                         button.MouseEnter += Base_MouseEnter;
                         button.MouseLeave += Base_MouseLeave;
+                        button.Click += OpenPos_Click;
                         button.Name = baseID.BaseID;
                         var nameTmp = baseID.BaseID.ToLower();
                         button.Text = (!string.IsNullOrEmpty(SystemService.UniverseBasesData[nameTmp].Name)) ? "[" + counter + "]" + SystemService.UniverseBasesData[nameTmp].Name : "[" + counter + "]" + baseID.ID;
@@ -204,6 +205,14 @@ namespace Freelancer_Companion_by_Dormammu
                 }
                 Map.Image = ImageMap;
             }
+        }
+
+        private void OpenPos_Click(object sender, EventArgs e)
+        {
+            var btn = (Button)sender;
+            textBoxX.Text = ObjectPoints.Find((obj) => obj.ID.Contains(btn.Name) || (obj.BaseID != null && obj.BaseID.Contains(btn.Name))).Pos[0].ToString();
+            textBoxY.Text = ObjectPoints.Find((obj) => obj.ID.Contains(btn.Name) || (obj.BaseID != null && obj.BaseID.Contains(btn.Name))).Pos[1].ToString();
+            textBoxZ.Text = ObjectPoints.Find((obj) => obj.ID.Contains(btn.Name) || (obj.BaseID != null && obj.BaseID.Contains(btn.Name))).Pos[2].ToString();
         }
 
         private void checkBoxContainers_CheckedChanged(object sender, EventArgs e)
@@ -256,8 +265,9 @@ namespace Freelancer_Companion_by_Dormammu
                         button.Height = 30;
                         var tooltip = new ToolTip();
                         tooltip.SetToolTip(button, $"Z: [{objectElement.Pos[1]}] X: [{objectElement.Pos[0]}] Y: [{objectElement.Pos[2]}]\n" + ((objectElement.Archetype != null) ? objectElement.Archetype : string.Empty));
-                        button.MouseEnter += Container_MouseEnter; ;
-                        button.MouseLeave += Container_MouseLeave; ;
+                        button.MouseEnter += Container_MouseEnter;
+                        button.MouseLeave += Container_MouseLeave;
+                        button.Click += OpenPos_Click;
                         button.Name = objectElement.ID;
                         var nameTmp = objectElement.ID.ToLower();
                         button.Text = "[" + counter + "]" + objectElement.ID;
@@ -280,7 +290,7 @@ namespace Freelancer_Companion_by_Dormammu
             using (Graphics gr = Graphics.FromImage(ImageMap))
             {
                 var counter = 0;
-                foreach (var objectElement in SystemService.UniverseSystemsData[CurrentSystem].Objects.FindAll((objectEl) => (objectEl.ID.Contains("_hole") || objectEl.ID.Contains(CurrentSystem.ToUpper()+"_to")) && !objectEl.ID.Contains("Zone_")))
+                foreach (var objectElement in SystemService.UniverseSystemsData[CurrentSystem].Objects.FindAll((objectEl) => (objectEl.ID.Contains("_hole") || objectEl.ID.ToLower().Contains(CurrentSystem.ToLower()+"_to")) && !objectEl.ID.Contains("Zone_")))
                 {
                     int x = (int)Math.Round(KeyResize * objectElement.Pos[0], MidpointRounding.AwayFromZero);
                     int y = (int)Math.Round(KeyResize * objectElement.Pos[2], MidpointRounding.AwayFromZero);
@@ -296,7 +306,7 @@ namespace Freelancer_Companion_by_Dormammu
                     if (checkBoxHoll.Checked == true)
                     {
                         counter++;
-                        //Формирую вывод UI
+                        //Формирую вывод UIвв
                         var button = new Button();
                         button.Width = 231;
                         button.Height = 30;
@@ -304,6 +314,7 @@ namespace Freelancer_Companion_by_Dormammu
                         tooltip.SetToolTip(button, $"Z: [{objectElement.Pos[1]}] X: [{objectElement.Pos[0]}] Y: [{objectElement.Pos[2]}]\n" + ((objectElement.Archetype != null) ? objectElement.Archetype : string.Empty));
                         button.MouseEnter += All_MouseEnter;
                         button.MouseLeave += All_MouseLeave;
+                        button.Click += OpenPos_Click;
                         button.Name = objectElement.ID;
                         var nameTmp = objectElement.ID.ToLower();
                         button.Text = "[" + counter + "]" + (!string.IsNullOrEmpty(objectElement.Goto) ? objectElement.Goto : objectElement.ID);
@@ -348,6 +359,7 @@ namespace Freelancer_Companion_by_Dormammu
                         tooltip.SetToolTip(button, $"Z: [{objectEl.Pos[1]}] X: [{objectEl.Pos[0]}] Y: [{objectEl.Pos[2]}]\n" + ((objectEl.Archetype != null) ? objectEl.Archetype : string.Empty));
                         button.MouseEnter += All_MouseEnter;
                         button.MouseLeave += All_MouseLeave;
+                        button.Click += OpenPos_Click;
                         button.Name = objectEl.ID;
                         var nameTmp = objectEl.ID.ToLower();
                         button.Text = "[" + counter + "]" + objectEl.ID;
