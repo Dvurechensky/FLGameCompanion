@@ -184,6 +184,7 @@ namespace Freelancer_Companion_by_Dormammu
                     //рисую или стираю точки на карте
                     if (checkBoxBases.Checked == true)
                     {
+                        counter++;
                         //Формирую вывод UI
                         var button = new Button();
                         button.Width = 231;
@@ -201,7 +202,7 @@ namespace Freelancer_Companion_by_Dormammu
                     else flowLayoutPanelNames.Controls.Clear();
 
                     //рисую или стираю точки на карте
-                    if (checkBoxBases.Checked == true) DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.Black, 10, 10);
+                    if (checkBoxBases.Checked == true) DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.Blue, 6, 6);
                     else RepaintAxis();
                 }
                 Map.Image = ImageMap;
@@ -215,6 +216,25 @@ namespace Freelancer_Companion_by_Dormammu
             textBoxY.Text = ObjectPoints.Find((obj) => obj.ID.Contains(btn.Name) || (obj.BaseID != null && obj.BaseID.Contains(btn.Name))).Pos[1].ToString();
             textBoxZ.Text = ObjectPoints.Find((obj) => obj.ID.Contains(btn.Name) || (obj.BaseID != null && obj.BaseID.Contains(btn.Name))).Pos[2].ToString();
         }
+
+
+        private void Holl_Click(object sender, EventArgs e)
+        {
+            var btn = (Button)sender;
+            if ((Control.ModifierKeys & Keys.Shift) == Keys.Shift)
+            {
+                var obj = ObjectPoints.Find((t) => t.ID.Contains(btn.Name));
+                var index = Array.IndexOf(SystemService.ArraySystemsCombobox, obj.GotoID);
+                comboBoxSystems.SelectedIndex = index;
+            }
+            else
+            {
+                textBoxX.Text = ObjectPoints.Find((obj) => obj.ID.Contains(btn.Name) || (obj.BaseID != null && obj.BaseID.Contains(btn.Name))).Pos[0].ToString();
+                textBoxY.Text = ObjectPoints.Find((obj) => obj.ID.Contains(btn.Name) || (obj.BaseID != null && obj.BaseID.Contains(btn.Name))).Pos[1].ToString();
+                textBoxZ.Text = ObjectPoints.Find((obj) => obj.ID.Contains(btn.Name) || (obj.BaseID != null && obj.BaseID.Contains(btn.Name))).Pos[2].ToString();
+            }
+        }
+
 
         private void checkBoxContainers_CheckedChanged(object sender, EventArgs e)
         {
@@ -277,7 +297,7 @@ namespace Freelancer_Companion_by_Dormammu
                     else flowLayoutPanelNames.Controls.Clear();
 
                     //рисую или стираю точки на карте
-                    if (checkBoxContainers.Checked == true) DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.Red);
+                    if (checkBoxContainers.Checked == true) DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.DarkCyan);
                     else RepaintAxis();
                 }
                 Map.Image = ImageMap;
@@ -307,7 +327,7 @@ namespace Freelancer_Companion_by_Dormammu
                     if (checkBoxHoll.Checked == true)
                     {
                         counter++;
-                        //Формирую вывод UIвв
+                        //Формирую вывод UI
                         var button = new Button();
                         button.Width = 231;
                         button.Height = 30;
@@ -315,7 +335,7 @@ namespace Freelancer_Companion_by_Dormammu
                         tooltip.SetToolTip(button, $"Z: [{objectElement.Pos[1]}] X: [{objectElement.Pos[0]}] Y: [{objectElement.Pos[2]}]\n" + ((objectElement.Archetype != null) ? objectElement.Archetype : string.Empty));
                         button.MouseEnter += All_MouseEnter;
                         button.MouseLeave += All_MouseLeave;
-                        button.Click += OpenPos_Click;
+                        button.Click += Holl_Click;
                         button.Name = objectElement.ID;
                         var nameTmp = objectElement.ID.ToLower();
                         button.Text = "[" + counter + "]" + (!string.IsNullOrEmpty(objectElement.Goto) ? objectElement.Goto : objectElement.ID);
@@ -324,7 +344,7 @@ namespace Freelancer_Companion_by_Dormammu
                     else flowLayoutPanelNames.Controls.Clear();
 
                     //рисую или стираю точки на карте
-                    if (checkBoxHoll.Checked == true) DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.Brown, 12, 12);
+                    if (checkBoxHoll.Checked == true) DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.DarkOrchid);
                     else RepaintAxis();
                 }
                 Map.Image = ImageMap;
@@ -369,7 +389,7 @@ namespace Freelancer_Companion_by_Dormammu
                     else flowLayoutPanelNames.Controls.Clear();
 
                     //рисую или стираю точки на карте
-                    if (checkBoxAll.Checked == true) DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.Blue);
+                    if (checkBoxAll.Checked == true) DrawService.DrawPoint(x, y, Map.Width, Map.Height, gr, Color.DarkOrange);
                     else RepaintAxis();
                 }
                 Map.Image = ImageMap;
@@ -395,8 +415,7 @@ namespace Freelancer_Companion_by_Dormammu
             using (Graphics gr = Graphics.FromImage(ImageMap))
             {
                 DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.White, 15);
-                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.White, 15, 15);
-                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.Red);
+                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.Black, 10, 10);
                 Map.Image = ImageMap;
             }
         }
@@ -409,7 +428,7 @@ namespace Freelancer_Companion_by_Dormammu
             //сделать точку крупнее
             using (Graphics gr = Graphics.FromImage(ImageMap))
             {
-                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.Red, 15, 15);
+                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.Red, 10, 10);
                 DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.Black, 15);
                 Map.Image = ImageMap;
             }
@@ -424,8 +443,7 @@ namespace Freelancer_Companion_by_Dormammu
             using (Graphics gr = Graphics.FromImage(ImageMap))
             {
                 DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.White, 15);
-                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.White, 15, 15);
-                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.LightGreen);
+                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.Red);
                 Map.Image = ImageMap;
             }
         }
@@ -438,8 +456,8 @@ namespace Freelancer_Companion_by_Dormammu
             //сделать точку крупнее
             using (Graphics gr = Graphics.FromImage(ImageMap))
             {
-                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.LightGreen, 15, 15);
-                DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.LightGreen, 15);
+                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.LightGreen);
+                DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.Black, 15);
                 Map.Image = ImageMap;
             }
         }
@@ -449,12 +467,12 @@ namespace Freelancer_Companion_by_Dormammu
             var button = (Button)sender;
             var obj = ObjectPoints.Find((baseEl) => baseEl.ID == button.Name);
             var name = button.Name;
+            if (obj == null) return;
             //сделать точку обычной
             using (Graphics gr = Graphics.FromImage(ImageMap))
             {
                 DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.White, 15);
-                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.White, 15, 15);
-                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.LightGreen);
+                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.Brown);
                 Map.Image = ImageMap;
             }
         }
@@ -467,8 +485,8 @@ namespace Freelancer_Companion_by_Dormammu
             //сделать точку крупнее
             using (Graphics gr = Graphics.FromImage(ImageMap))
             {
-                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.LightGreen, 15, 15);
-                DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.LightGreen, 15);
+                DrawService.DrawPoint(obj.MapPos[0], obj.MapPos[1], Map.Width, Map.Height, gr, Color.LightGreen);
+                DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.Black, 15);
                 Map.Image = ImageMap;
             }
         }

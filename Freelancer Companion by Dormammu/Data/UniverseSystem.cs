@@ -101,5 +101,9 @@ namespace Freelancer_Companion_by_Dormammu.Data
         /// Куда ведёт портал
         /// </summary>
         public string Goto { get; set; }
+        /// <summary>
+        /// Куда ведёт портал ID
+        /// </summary>
+        public string GotoID { get; set; }
     }
 }

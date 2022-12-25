@@ -30,6 +30,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
         public string IDCurrent { get; set; }
         private string BaseId { get; set; }
         private string SystemID { get; set; }
+        public string[] ArraySystemsCombobox { get; set; }
 
         public SystemService()
         {
@@ -107,6 +108,8 @@ namespace Freelancer_Companion_by_Dormammu.Services
 
                 var resultDataSystems = new Dictionary<string, UniverseSystem>();
                 int resultCountSystem = 0;
+                var countCurrSys = 0;
+                ArraySystemsCombobox = new string[UniverseSystemsData.Count];
 
                 //формирую список идентификаторов систем
                 foreach (var dirInfo in dirInfoArray)
@@ -120,6 +123,8 @@ namespace Freelancer_Companion_by_Dormammu.Services
                             blockInfo.Items.Add(UniverseSystemsData[dirName].Id);
                         else
                             blockInfo.Items.Add(UniverseSystemsData[dirName].Name + " | " + UniverseSystemsData[dirName].Id);
+                        ArraySystemsCombobox[countCurrSys] = dirName;
+                        countCurrSys++;
                         SystemsID.Add(UniverseSystemsData[dirName].Id);
                     }
                     else
@@ -306,12 +311,9 @@ namespace Freelancer_Companion_by_Dormammu.Services
                     {
                         var loadout = (data.Substring(6, data.Length - 6)).Trim().ToLower();
                         var idS = loadout.Substring(0, loadout.IndexOf(','));
-                        if(!SystemNamesID.ContainsKey(idS))
-                        {
-                            int y = 8;
-                        }
                         var nameS = SystemNamesID[idS];
                         UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].Goto = nameS;
+                        UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].GotoID = idS;
                     }
                 }
                 data = sr.ReadLine();
