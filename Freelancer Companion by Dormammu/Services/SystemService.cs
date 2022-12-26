@@ -21,24 +21,48 @@ namespace Freelancer_Companion_by_Dormammu.Services
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool FreeLibrary(IntPtr hModule);
-
+        /// <summary>
+        /// Все данные системы
+        /// </summary>
         public Dictionary<string, UniverseSystem> UniverseSystemsData { get; set; }
         public Dictionary<string, UniverseBase> UniverseBasesData { get; set; }
         public List<string> SystemsID { get; set; }
+        /// <summary>
+        /// ID - Name системы
+        /// </summary>
         public Dictionary<string, string> SystemNamesID { get; set; }
+        /// <summary>
+        /// Cписок контейнеров
+        /// </summary>
         public List<string> SupriseID { get; set; }
+        /// <summary>
+        /// Список путей от систем до систем
+        /// </summary>
+        public List<string> HollRoads { get; set; } 
         public string IDCurrent { get; set; }
         private string BaseId { get; set; }
         private string SystemID { get; set; }
+        /// <summary>
+        /// Массив очищенных айдишников систем для ComboBox
+        /// </summary>
         public string[] ArraySystemsCombobox { get; set; }
+        /// <summary>
+        /// Name - Id систем
+        /// </summary>
+        public Dictionary<string, string> SystemsNameId { get; set; }
+        public bool IsRussian { get; set; }
+        public int[,] MatrixRoads { get; set; }
 
-        public SystemService()
+        public SystemService(bool isRussian)
         {
             UniverseSystemsData = new Dictionary<string, UniverseSystem>();
             UniverseBasesData = new Dictionary<string, UniverseBase>();
             SystemNamesID = new Dictionary<string, string>();
+            SystemsNameId = new Dictionary<string, string>();
             SystemsID = new List<string>();
             SupriseID = new List<string>();
+            HollRoads = new List<string>();
+            IsRussian = isRussian;
         }
 
         /// <summary>
@@ -56,7 +80,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
             return resultBuilder.ToString();
         }
 
-        public void GetInfo(ComboBox blockInfo, LogService logService)
+        public void GetInfo(ComboBox blockInfo, ComboBox road_1, ComboBox road_2, LogService logService)
         {
             try
             {   File.Delete("log.txt"); //чищу логи
@@ -119,10 +143,13 @@ namespace Freelancer_Companion_by_Dormammu.Services
                     {
                         resultCountSystem++;
                         resultDataSystems.Add(dirName, UniverseSystemsData[dirName]);
+
+                        road_1.Items.Add((IsRussian) ? UniverseSystemsData[dirName].Name : UniverseSystemsData[dirName].Id);
+                        road_2.Items.Add((IsRussian) ? UniverseSystemsData[dirName].Name : UniverseSystemsData[dirName].Id);
+
                         if (UniverseSystemsData[dirName].Name.Length == 0)
                             blockInfo.Items.Add(UniverseSystemsData[dirName].Id);
-                        else
-                            blockInfo.Items.Add(UniverseSystemsData[dirName].Name + " | " + UniverseSystemsData[dirName].Id);
+                        else blockInfo.Items.Add(UniverseSystemsData[dirName].Name + " | " + UniverseSystemsData[dirName].Id);
                         ArraySystemsCombobox[countCurrSys] = dirName;
                         countCurrSys++;
                         SystemsID.Add(UniverseSystemsData[dirName].Id);
@@ -135,7 +162,47 @@ namespace Freelancer_Companion_by_Dormammu.Services
                 }
 
                 blockInfo.SelectedIndex = 0;
+                road_1.SelectedIndex = 0;
+                road_2.SelectedIndex = 1;
+                ArraySystemsCombobox = ArraySystemsCombobox.Where(x => x != null).ToArray();
                 logService.LogEvent("Список систем определён");
+
+                //создаём гигантский ступенчатый масссив для поисковика
+                MatrixRoads = new int[ArraySystemsCombobox.Length, ArraySystemsCombobox.Length];
+                //обработать спсиок всех связей между системами, все гиперпереходы
+                foreach (var sys in ArraySystemsCombobox)
+                {
+                    foreach (var elem in UniverseSystemsData[sys].Objects.FindAll((el) => !el.ID.Contains('=') && el.ID.ToLower().Contains(sys.ToLower() + "_to")))
+                    {
+                        var name = elem.ID;
+                        var destiny = name.Substring(name.IndexOf('_') + 4, name.Length - 4 - sys.Length);
+                        if (destiny.IndexOf('_') != -1)
+                            destiny = destiny.Substring(0, destiny.IndexOf('_'));
+                        var res = sys.ToLower() + "=" + destiny.ToLower();
+                        if(!res.Contains("police01"))
+                            HollRoads.Add(res);
+                    }
+                }
+                //перебирает список корректный систем
+                for(int i = 0; i < ArraySystemsCombobox.Length; i++)
+                {
+                    var sys = ArraySystemsCombobox[i];
+                    //перебирает список маршрутов
+                    foreach (var road in HollRoads)
+                    { //хотим найти все маршруты которые ведут в конкретную систему
+                        var frstSys = road.Substring(0, road.IndexOf('='));
+                        var lstSys = road.Substring(road.IndexOf('=') + 1);
+                        var index = Array.IndexOf(ArraySystemsCombobox, lstSys);
+                        if(frstSys.Contains(sys) && UniverseSystemsData.ContainsKey(lstSys))
+                            MatrixRoads[i,index] = 1;
+                    }
+
+                    if (!SystemsNameId.ContainsKey(UniverseSystemsData[ArraySystemsCombobox[i]].Name))
+                        SystemsNameId.Add(UniverseSystemsData[ArraySystemsCombobox[i]].Name, ArraySystemsCombobox[i]);
+                    else
+                        logService.LogEvent(UniverseSystemsData[ArraySystemsCombobox[i]].Name);
+                }
+                logService.LogEvent("Список маршрутов определён");
             }
             catch (Exception exception)
             {

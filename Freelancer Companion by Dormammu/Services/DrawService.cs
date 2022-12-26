@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using GraphX;
 
 namespace Freelancer_Companion_by_Dormammu.Services
 {

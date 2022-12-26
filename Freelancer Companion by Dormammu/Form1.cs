@@ -1,10 +1,17 @@
 ﻿using Freelancer_Companion_by_Dormammu.Data;
 using Freelancer_Companion_by_Dormammu.Services;
+using GraphX.Common.Enums;
+using GraphX.Controls.Models;
+using GraphX.Controls;
+using GraphX.Logic.Algorithms.OverlapRemoval;
+using GraphX.Logic.Models;
+using QuickGraph;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using WindowsFormsProject;
 
 namespace Freelancer_Companion_by_Dormammu
 {
@@ -24,6 +31,9 @@ namespace Freelancer_Companion_by_Dormammu
         private double KeyResize { get; set; }
         private double KeyOverSize { get; set; }
         private string CurrentSystem { get; set; }
+        private ZoomControl Zoomctrl { get; set; }
+        private GraphAreaExample GArea { get; set; }
+        private GXLogicCore<DataVertex, DataEdge, BidirectionalGraph<DataVertex, DataEdge>> gXLogic { get; set; }
 
         public FreelancerCompanionDvurechensky()
         {
@@ -56,9 +66,10 @@ namespace Freelancer_Companion_by_Dormammu
         /// </summary>
         private void InitializeSystems()
         {
-            SystemService = new SystemService();
+            checkBoxRusNames.Checked = true;
+            SystemService = new SystemService(isRussian: checkBoxRusNames.Checked);
             DrawService = new DrawService(5, 3);
-            SystemService.GetInfo(comboBoxSystems, LogService);
+            SystemService.GetInfo(comboBoxSystems, comboBoxRoadFirst, comboBoxRoadLast, LogService);
             labelSystemss.Text = comboBoxSystems.Items.Count.ToString();
         }
 
@@ -490,5 +501,163 @@ namespace Freelancer_Companion_by_Dormammu
                 Map.Image = ImageMap;
             }
         }
+
+        #region GraphMap
+        private System.Windows.UIElement GenerateWpfVisuals(bool Custom = false)
+        {
+            Zoomctrl = new ZoomControl();
+            ZoomControl.SetViewFinderVisibility(Zoomctrl, System.Windows.Visibility.Visible);
+            gXLogic = new GXLogicCore<DataVertex, DataEdge, BidirectionalGraph<DataVertex, DataEdge>>();
+            GArea = new GraphAreaExample
+            {
+                LogicCore = gXLogic,
+                EdgeLabelFactory = new DefaultEdgelabelFactory()
+            };
+            GArea.ShowAllEdgesLabels(true);
+            gXLogic.Graph = (!Custom) ? GenerateGraph() : GenerateRoad();
+            gXLogic.DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.LinLog;//KK - неплохо
+            gXLogic.DefaultLayoutAlgorithmParams = gXLogic.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.LinLog);
+            gXLogic.DefaultOverlapRemovalAlgorithm = OverlapRemovalAlgorithmTypeEnum.FSA;
+            gXLogic.DefaultOverlapRemovalAlgorithmParams = gXLogic.AlgorithmFactory.CreateOverlapRemovalParameters(OverlapRemovalAlgorithmTypeEnum.OneWayFSA);
+            ((OverlapRemovalParameters)gXLogic.DefaultOverlapRemovalAlgorithmParams).HorizontalGap = 100;
+            ((OverlapRemovalParameters)gXLogic.DefaultOverlapRemovalAlgorithmParams).VerticalGap = 100;
+            gXLogic.DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.None;
+            gXLogic.AsyncAlgorithmCompute = false;
+            Zoomctrl.Content = GArea;
+            GArea.RelayoutFinished += gArea_RelayoutFinished;
+            var myResourceDictionary = new System.Windows.ResourceDictionary { Source = new Uri("Templates\\template.xaml", UriKind.Relative) };
+            Zoomctrl.Resources.MergedDictionaries.Add(myResourceDictionary);
+            return Zoomctrl;
+        }
+
+        private void gArea_RelayoutFinished(object sender, EventArgs e)
+        {
+            Zoomctrl.ZoomToFill();
+        }
+
+        private GraphExample GenerateGraph()
+        {
+            //загрузка систем
+            var dataGraph = new GraphExample();
+            for(int i = 0; i < SystemService.ArraySystemsCombobox.Length; i++)
+            {
+                var dataVertex = new DataVertex();
+                if (checkBoxRusNames.Checked == true)
+                {
+                    var rusName = SystemService.UniverseSystemsData[SystemService.ArraySystemsCombobox[i]].Name;
+                    dataVertex = new DataVertex("[" + i + "] " + rusName);
+                }
+                else dataVertex = new DataVertex("[" + i + "] " + SystemService.ArraySystemsCombobox[i]);
+                dataGraph.AddVertex(dataVertex);
+            }
+            var vlist = dataGraph.Vertices.ToList();
+
+            //создание связей
+            if(SystemService.HollRoads != null)
+            {
+                foreach(var road in SystemService.HollRoads)
+                {
+                    var roadFirstSys = road.Substring(0, road.IndexOf('='));
+                    var roadLastSys = road.Substring((road.IndexOf('=') + 1));
+                    var index_1 = Array.IndexOf(SystemService.ArraySystemsCombobox, roadFirstSys);
+                    var index_2 = Array.IndexOf(SystemService.ArraySystemsCombobox, roadLastSys);
+                    if (index_1 == -1 || index_2 == -1) continue;
+                    var dataEdge = new DataEdge(vlist[index_1], vlist[index_2]) { Text = string.Format("{0} -> {1}", vlist[index_1], vlist[index_2]) };
+                    dataGraph.AddEdge(dataEdge);
+                }
+            }
+
+            return dataGraph;
+        }
+
+        private GraphExample GenerateRoad()
+        {
+            //загрузка систем
+            var dataGraph = new GraphExample();
+
+            LogService.LogEvent($"Создаю путь от {comboBoxRoadFirst.Text} до {comboBoxRoadLast.Text}");
+
+            var id1 = string.Empty;
+            var id2 = string.Empty;
+            if (checkBoxRusNames.Checked)
+            {   // определяю английское с русского наименования
+                id1 = SystemService.SystemsNameId[comboBoxRoadFirst.Text];
+                id2 = SystemService.SystemsNameId[comboBoxRoadLast.Text];
+            }
+            else {
+                id1 = comboBoxRoadFirst.Text;
+                id2 = comboBoxRoadLast.Text;
+            }
+
+            //ступенчатый массив
+            var index_1 = Array.IndexOf(SystemService.ArraySystemsCombobox, id1);
+            var index_2 = Array.IndexOf(SystemService.ArraySystemsCombobox, id2);
+            var start = string.Empty;
+            if (checkBoxRusNames.Checked) start = SystemService.SystemNamesID[SystemService.ArraySystemsCombobox[index_1]];
+            else start = SystemService.ArraySystemsCombobox[index_1];
+
+
+
+            //findRoute(SystemService.MatrixRoads, index_1, index_2, SystemService.MatrixRoads.Length, new bool[SystemService.MatrixRoads.Length], "");
+
+            //for (int i = 0; i < SystemService.ArraySystemsCombobox.Length; i++)
+            //{
+            //    var dataVertex = new DataVertex();
+            //    if (checkBoxRusNames.Checked == true)
+            //    {
+            //        var rusName = SystemService.UniverseSystemsData[SystemService.ArraySystemsCombobox[i]].Name;
+            //        dataVertex = new DataVertex("[" + i + "] " + rusName);
+            //    }
+            //    else dataVertex = new DataVertex("[" + i + "] " + SystemService.ArraySystemsCombobox[i]);
+            //    dataGraph.AddVertex(dataVertex);
+            //}
+            //var vlist = dataGraph.Vertices.ToList();
+
+            ////создание связей
+            //if (SystemService.HollRoads != null)
+            //{
+            //    foreach (var road in SystemService.HollRoads)
+            //    {
+            //        var roadFirstSys = road.Substring(0, road.IndexOf('='));
+            //        var roadLastSys = road.Substring((road.IndexOf('=') + 1));
+            //        var index_1 = Array.IndexOf(SystemService.ArraySystemsCombobox, roadFirstSys);
+            //        var index_2 = Array.IndexOf(SystemService.ArraySystemsCombobox, roadLastSys);
+            //        if (index_1 == -1 || index_2 == -1) continue;
+            //        var dataEdge = new DataEdge(vlist[index_1], vlist[index_2]) { Text = string.Format("{0} -> {1}", vlist[index_1], vlist[index_2]) };
+            //        dataGraph.AddEdge(dataEdge);
+            //    }
+            //}
+            return dataGraph;
+        }
+
+        private void but_generate_Click(object sender, EventArgs e)
+        {
+            wpfHost.Visible = true;
+            wpfHost.Child = GenerateWpfVisuals(Custom: false);
+            GArea.GenerateGraph(true);
+            GArea.SetVerticesDrag(true, true);
+            Zoomctrl.ZoomToFill();
+        }
+
+        private void but_reload_Click(object sender, EventArgs e)
+        {
+            wpfHost.Visible = true;
+            GArea.RelayoutGraph();
+        }
+
+        private void buttonSetRoad_Click(object sender, EventArgs e)
+        {
+            wpfHost.Visible = true;
+            wpfHost.Child = GenerateWpfVisuals(Custom: false);
+            GArea.GenerateGraph(true);
+            GArea.SetVerticesDrag(true, true);
+            Zoomctrl.ZoomToFill();
+        }
+
+        private void buttonCloseMap_Click(object sender, EventArgs e)
+        {
+            wpfHost.Visible = false;
+        }
+        #endregion
     }
 }
