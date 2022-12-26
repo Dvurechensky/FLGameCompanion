@@ -65,6 +65,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Dijkstra.cs" />
+    <Compile Include="Models\Graph.cs" />
+    <Compile Include="Models\GraphEdge.cs" />
+    <Compile Include="Models\GraphVertex.cs" />
     <Compile Include="Models\GraphVertexInfo.cs" />
     <Compile Include="Data\UniverseBase.cs" />
     <Compile Include="Data\UniverseSystem.cs" />

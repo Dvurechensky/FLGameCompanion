@@ -182,6 +182,10 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         if(!res.Contains("police01"))
                             HollRoads.Add(res);
                     }
+                    HollRoads.Add("aod01=hu04"); //система ангелов тьиы
+                    HollRoads.Add("hu04=aod01"); //система ангелов тьиы
+                    HollRoads.Add("dream_system01=hi03"); //система грёз
+                    HollRoads.Add("hi03=dream_system01"); //система грёз
                 }
                 //перебирает список корректный систем
                 for(int i = 0; i < ArraySystemsCombobox.Length; i++)

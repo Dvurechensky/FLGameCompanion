@@ -56,8 +56,9 @@
             // 
             this.Map.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.Map.Location = new System.Drawing.Point(0, -2);
+            this.Map.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Map.Name = "Map";
-            this.Map.Size = new System.Drawing.Size(800, 800);
+            this.Map.Size = new System.Drawing.Size(1067, 985);
             this.Map.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.Map.TabIndex = 1;
             this.Map.TabStop = false;
@@ -70,9 +71,10 @@
             this.comboBoxSystems.DisplayMember = "Add";
             this.comboBoxSystems.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxSystems.FormattingEnabled = true;
-            this.comboBoxSystems.Location = new System.Drawing.Point(806, 1);
+            this.comboBoxSystems.Location = new System.Drawing.Point(1075, 1);
+            this.comboBoxSystems.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxSystems.Name = "comboBoxSystems";
-            this.comboBoxSystems.Size = new System.Drawing.Size(426, 24);
+            this.comboBoxSystems.Size = new System.Drawing.Size(567, 28);
             this.comboBoxSystems.TabIndex = 2;
             this.comboBoxSystems.SelectedIndexChanged += new System.EventHandler(this.comboBoxSystems_SelectedIndexChanged);
             this.comboBoxSystems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxSystems_KeyPress);
@@ -84,9 +86,10 @@
             this.labelSystemss.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.labelSystemss.Font = new System.Drawing.Font("MS PGothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelSystemss.ForeColor = System.Drawing.Color.FloralWhite;
-            this.labelSystemss.Location = new System.Drawing.Point(1238, 1);
+            this.labelSystemss.Location = new System.Drawing.Point(1651, 1);
+            this.labelSystemss.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelSystemss.Name = "labelSystemss";
-            this.labelSystemss.Size = new System.Drawing.Size(44, 21);
+            this.labelSystemss.Size = new System.Drawing.Size(51, 26);
             this.labelSystemss.TabIndex = 3;
             this.labelSystemss.Text = "999";
             this.labelSystemss.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -94,9 +97,10 @@
             // LoggerRichTextBox
             // 
             this.LoggerRichTextBox.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LoggerRichTextBox.Location = new System.Drawing.Point(806, 443);
+            this.LoggerRichTextBox.Location = new System.Drawing.Point(1075, 545);
+            this.LoggerRichTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LoggerRichTextBox.Name = "LoggerRichTextBox";
-            this.LoggerRichTextBox.Size = new System.Drawing.Size(476, 326);
+            this.LoggerRichTextBox.Size = new System.Drawing.Size(633, 400);
             this.LoggerRichTextBox.TabIndex = 4;
             this.LoggerRichTextBox.Text = "";
             // 
@@ -105,19 +109,20 @@
             this.flowLayoutPanelNames.AutoScroll = true;
             this.flowLayoutPanelNames.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanelNames.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.flowLayoutPanelNames.Location = new System.Drawing.Point(806, 167);
+            this.flowLayoutPanelNames.Location = new System.Drawing.Point(1075, 206);
+            this.flowLayoutPanelNames.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.flowLayoutPanelNames.Name = "flowLayoutPanelNames";
-            this.flowLayoutPanelNames.Size = new System.Drawing.Size(476, 270);
+            this.flowLayoutPanelNames.Size = new System.Drawing.Size(634, 332);
             this.flowLayoutPanelNames.TabIndex = 5;
             // 
             // checkBoxBases
             // 
             this.checkBoxBases.AutoSize = true;
             this.checkBoxBases.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxBases.Location = new System.Drawing.Point(806, 31);
-            this.checkBoxBases.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxBases.Location = new System.Drawing.Point(1075, 38);
+            this.checkBoxBases.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxBases.Name = "checkBoxBases";
-            this.checkBoxBases.Size = new System.Drawing.Size(128, 24);
+            this.checkBoxBases.Size = new System.Drawing.Size(160, 28);
             this.checkBoxBases.TabIndex = 6;
             this.checkBoxBases.Text = "Показать базы";
             this.checkBoxBases.UseVisualStyleBackColor = true;
@@ -127,10 +132,10 @@
             // 
             this.checkBoxContainers.AutoSize = true;
             this.checkBoxContainers.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxContainers.Location = new System.Drawing.Point(806, 58);
-            this.checkBoxContainers.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxContainers.Location = new System.Drawing.Point(1075, 71);
+            this.checkBoxContainers.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxContainers.Name = "checkBoxContainers";
-            this.checkBoxContainers.Size = new System.Drawing.Size(175, 24);
+            this.checkBoxContainers.Size = new System.Drawing.Size(220, 28);
             this.checkBoxContainers.TabIndex = 7;
             this.checkBoxContainers.Text = "Показать контейнеры";
             this.checkBoxContainers.UseVisualStyleBackColor = true;
@@ -140,10 +145,10 @@
             // 
             this.checkBoxAll.AutoSize = true;
             this.checkBoxAll.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxAll.Location = new System.Drawing.Point(1032, 30);
-            this.checkBoxAll.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxAll.Location = new System.Drawing.Point(1376, 37);
+            this.checkBoxAll.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxAll.Name = "checkBoxAll";
-            this.checkBoxAll.Size = new System.Drawing.Size(117, 24);
+            this.checkBoxAll.Size = new System.Drawing.Size(148, 28);
             this.checkBoxAll.TabIndex = 8;
             this.checkBoxAll.Text = "Показать всё";
             this.checkBoxAll.UseVisualStyleBackColor = true;
@@ -153,10 +158,10 @@
             // 
             this.checkBoxHoll.AutoSize = true;
             this.checkBoxHoll.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxHoll.Location = new System.Drawing.Point(1032, 58);
-            this.checkBoxHoll.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxHoll.Location = new System.Drawing.Point(1376, 71);
+            this.checkBoxHoll.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxHoll.Name = "checkBoxHoll";
-            this.checkBoxHoll.Size = new System.Drawing.Size(152, 24);
+            this.checkBoxHoll.Size = new System.Drawing.Size(191, 28);
             this.checkBoxHoll.TabIndex = 9;
             this.checkBoxHoll.Text = "Показать порталы";
             this.checkBoxHoll.UseVisualStyleBackColor = true;
@@ -164,27 +169,30 @@
             // 
             // textBoxX
             // 
-            this.textBoxX.Location = new System.Drawing.Point(1214, 31);
+            this.textBoxX.Location = new System.Drawing.Point(1619, 38);
+            this.textBoxX.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxX.Name = "textBoxX";
-            this.textBoxX.Size = new System.Drawing.Size(68, 20);
+            this.textBoxX.Size = new System.Drawing.Size(89, 22);
             this.textBoxX.TabIndex = 10;
             this.textBoxX.Text = "X";
             this.textBoxX.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBoxY
             // 
-            this.textBoxY.Location = new System.Drawing.Point(1214, 57);
+            this.textBoxY.Location = new System.Drawing.Point(1619, 70);
+            this.textBoxY.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxY.Name = "textBoxY";
-            this.textBoxY.Size = new System.Drawing.Size(68, 20);
+            this.textBoxY.Size = new System.Drawing.Size(89, 22);
             this.textBoxY.TabIndex = 11;
             this.textBoxY.Text = "Y";
             this.textBoxY.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBoxZ
             // 
-            this.textBoxZ.Location = new System.Drawing.Point(1214, 83);
+            this.textBoxZ.Location = new System.Drawing.Point(1619, 102);
+            this.textBoxZ.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxZ.Name = "textBoxZ";
-            this.textBoxZ.Size = new System.Drawing.Size(68, 20);
+            this.textBoxZ.Size = new System.Drawing.Size(89, 22);
             this.textBoxZ.TabIndex = 12;
             this.textBoxZ.Text = "Z";
             this.textBoxZ.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -196,8 +204,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.wpfHost.BackColor = System.Drawing.Color.White;
             this.wpfHost.Location = new System.Drawing.Point(0, -2);
+            this.wpfHost.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.wpfHost.Name = "wpfHost";
-            this.wpfHost.Size = new System.Drawing.Size(801, 800);
+            this.wpfHost.Size = new System.Drawing.Size(1068, 985);
             this.wpfHost.TabIndex = 14;
             this.wpfHost.Text = "elementHost1";
             this.wpfHost.Visible = false;
@@ -207,9 +216,10 @@
             // 
             this.but_generate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.but_generate.Image = ((System.Drawing.Image)(resources.GetObject("but_generate.Image")));
-            this.but_generate.Location = new System.Drawing.Point(806, 96);
+            this.but_generate.Location = new System.Drawing.Point(1075, 118);
+            this.but_generate.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.but_generate.Name = "but_generate";
-            this.but_generate.Size = new System.Drawing.Size(65, 65);
+            this.but_generate.Size = new System.Drawing.Size(87, 80);
             this.but_generate.TabIndex = 2;
             this.but_generate.UseVisualStyleBackColor = true;
             this.but_generate.Click += new System.EventHandler(this.but_generate_Click);
@@ -218,9 +228,10 @@
             // 
             this.but_reload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.but_reload.Image = ((System.Drawing.Image)(resources.GetObject("but_reload.Image")));
-            this.but_reload.Location = new System.Drawing.Point(877, 96);
+            this.but_reload.Location = new System.Drawing.Point(1169, 118);
+            this.but_reload.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.but_reload.Name = "but_reload";
-            this.but_reload.Size = new System.Drawing.Size(65, 65);
+            this.but_reload.Size = new System.Drawing.Size(87, 80);
             this.but_reload.TabIndex = 15;
             this.but_reload.UseVisualStyleBackColor = true;
             this.but_reload.Click += new System.EventHandler(this.but_reload_Click);
@@ -228,10 +239,12 @@
             // buttonSetRoad
             // 
             this.buttonSetRoad.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSetRoad.Enabled = false;
             this.buttonSetRoad.Image = ((System.Drawing.Image)(resources.GetObject("buttonSetRoad.Image")));
-            this.buttonSetRoad.Location = new System.Drawing.Point(948, 96);
+            this.buttonSetRoad.Location = new System.Drawing.Point(1264, 118);
+            this.buttonSetRoad.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonSetRoad.Name = "buttonSetRoad";
-            this.buttonSetRoad.Size = new System.Drawing.Size(65, 65);
+            this.buttonSetRoad.Size = new System.Drawing.Size(87, 80);
             this.buttonSetRoad.TabIndex = 16;
             this.buttonSetRoad.UseVisualStyleBackColor = true;
             this.buttonSetRoad.Click += new System.EventHandler(this.buttonSetRoad_Click);
@@ -243,9 +256,10 @@
             this.comboBoxRoadFirst.DisplayMember = "Add";
             this.comboBoxRoadFirst.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxRoadFirst.FormattingEnabled = true;
-            this.comboBoxRoadFirst.Location = new System.Drawing.Point(1019, 107);
+            this.comboBoxRoadFirst.Location = new System.Drawing.Point(1359, 132);
+            this.comboBoxRoadFirst.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxRoadFirst.Name = "comboBoxRoadFirst";
-            this.comboBoxRoadFirst.Size = new System.Drawing.Size(263, 24);
+            this.comboBoxRoadFirst.Size = new System.Drawing.Size(349, 28);
             this.comboBoxRoadFirst.TabIndex = 17;
             // 
             // comboBoxRoadLast
@@ -255,19 +269,20 @@
             this.comboBoxRoadLast.DisplayMember = "Add";
             this.comboBoxRoadLast.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxRoadLast.FormattingEnabled = true;
-            this.comboBoxRoadLast.Location = new System.Drawing.Point(1019, 137);
+            this.comboBoxRoadLast.Location = new System.Drawing.Point(1359, 169);
+            this.comboBoxRoadLast.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxRoadLast.Name = "comboBoxRoadLast";
-            this.comboBoxRoadLast.Size = new System.Drawing.Size(263, 24);
+            this.comboBoxRoadLast.Size = new System.Drawing.Size(349, 28);
             this.comboBoxRoadLast.TabIndex = 18;
             // 
             // checkBoxRusNames
             // 
             this.checkBoxRusNames.AutoSize = true;
             this.checkBoxRusNames.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBoxRusNames.Location = new System.Drawing.Point(1032, 83);
-            this.checkBoxRusNames.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxRusNames.Location = new System.Drawing.Point(1376, 102);
+            this.checkBoxRusNames.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBoxRusNames.Name = "checkBoxRusNames";
-            this.checkBoxRusNames.Size = new System.Drawing.Size(118, 24);
+            this.checkBoxRusNames.Size = new System.Drawing.Size(144, 28);
             this.checkBoxRusNames.TabIndex = 19;
             this.checkBoxRusNames.Text = "Русский язык";
             this.checkBoxRusNames.UseVisualStyleBackColor = true;
@@ -280,9 +295,10 @@
             this.buttonCloseMap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonCloseMap.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonCloseMap.ForeColor = System.Drawing.Color.AliceBlue;
-            this.buttonCloseMap.Location = new System.Drawing.Point(806, 775);
+            this.buttonCloseMap.Location = new System.Drawing.Point(1075, 954);
+            this.buttonCloseMap.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonCloseMap.Name = "buttonCloseMap";
-            this.buttonCloseMap.Size = new System.Drawing.Size(25, 23);
+            this.buttonCloseMap.Size = new System.Drawing.Size(33, 28);
             this.buttonCloseMap.TabIndex = 20;
             this.buttonCloseMap.Text = "X";
             this.buttonCloseMap.UseVisualStyleBackColor = false;
@@ -290,10 +306,10 @@
             // 
             // FreelancerCompanionDvurechensky
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
-            this.ClientSize = new System.Drawing.Size(1294, 800);
+            this.ClientSize = new System.Drawing.Size(1725, 985);
             this.Controls.Add(this.buttonCloseMap);
             this.Controls.Add(this.checkBoxRusNames);
             this.Controls.Add(this.comboBoxRoadLast);
@@ -314,10 +330,11 @@
             this.Controls.Add(this.labelSystemss);
             this.Controls.Add(this.comboBoxSystems);
             this.Controls.Add(this.Map);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(1510, 1033);
+            this.MaximumSize = new System.Drawing.Size(2007, 1261);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(1310, 839);
+            this.MinimumSize = new System.Drawing.Size(1741, 1022);
             this.Name = "FreelancerCompanionDvurechensky";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

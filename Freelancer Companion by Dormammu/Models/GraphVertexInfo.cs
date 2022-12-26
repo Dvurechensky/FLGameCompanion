@@ -1,6 +1,4 @@
-﻿using WindowsFormsProject;
-
-namespace Freelancer_Companion_by_Dormammu.Data
+﻿namespace Freelancer_Companion_by_Dormammu.Data
 {
     /// <summary>
     /// Информация о вершине
@@ -10,7 +8,7 @@ namespace Freelancer_Companion_by_Dormammu.Data
         /// <summary>
         /// Вершина
         /// </summary>
-        public DataVertex Vertex { get; set; }
+        public GraphVertex Vertex { get; set; }
 
         /// <summary>
         /// Не посещенная вершина
@@ -25,13 +23,13 @@ namespace Freelancer_Companion_by_Dormammu.Data
         /// <summary>
         /// Предыдущая вершина
         /// </summary>
-        public DataVertex PreviousVertex { get; set; }
+        public GraphVertex PreviousVertex { get; set; }
 
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="vertex">Вершина</param>
-        public GraphVertexInfo(DataVertex vertex)
+        public GraphVertexInfo(GraphVertex vertex)
         {
             Vertex = vertex;
             IsUnvisited = true;
