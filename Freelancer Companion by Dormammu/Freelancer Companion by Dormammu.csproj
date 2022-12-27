@@ -64,6 +64,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ComboBoxItem.cs" />
+    <Compile Include="Data\Equipment.cs" />
+    <Compile Include="Data\LootableZone.cs" />
     <Compile Include="Models\Dijkstra.cs" />
     <Compile Include="Models\Graph.cs" />
     <Compile Include="Models\GraphEdge.cs" />

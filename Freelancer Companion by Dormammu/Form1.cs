@@ -71,7 +71,7 @@ namespace Freelancer_Companion_by_Dormammu
             checkBoxRusNames.Checked = true;
             SystemService = new SystemService(isRussian: checkBoxRusNames.Checked);
             DrawService = new DrawService(5, 3);
-            SystemService.GetInfo(comboBoxSystems, comboBoxRoadFirst, comboBoxRoadLast, LogService);
+            SystemService.GetInfo(comboBoxSystems, comboBoxRoadFirst, comboBoxRoadLast, comboBoxSearch, LogService);
             labelSystemss.Text = comboBoxSystems.Items.Count.ToString();
         }
 
@@ -502,6 +502,41 @@ namespace Freelancer_Companion_by_Dormammu
                 DrawService.DrawText(new Point(obj.MapPos[0] + 15, obj.MapPos[1] + 15), Map.Width, Map.Height, name, gr, Brushes.Black, 15);
                 Map.Image = ImageMap;
             }
+        }
+        private void comboBoxSearch_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var combo = (ComboBox)sender;
+
+            LogService.LogEvent("Ищем элемент " + comboBoxSearch.Text + "...");
+
+            //Ищу совпадения в контейнерах
+
+            //Ищу совпадения в астероидах
+            //foreach(var ast in SystemService.SysAsteroids)
+            //{
+            //    foreach (var item in ast.Value)
+            //    {
+            //        var it = SystemService.Equipments.Find((el) => el.Id.Contains(item.LootId.ToLower()));
+            //        if (it != null)
+            //            LogService.LogEvent(SystemService.Equipments.Find((el) => 
+            //            el.Id.Contains(item.LootId.ToLower())).Name + "/" + 
+            //            SystemService.Equipments.Find((el) => 
+            //            el.Id.Contains(item.LootId.ToLower())).Id);
+            //    }
+            //}
+
+            LogService.LogEvent("--------------");
+
+            foreach (var ast in SystemService.SysAsteroids)
+            {
+                var val = ast.Value.Find((zone) => zone.LootId.Contains((combo.SelectedItem as ComboBoxItem).ID));
+                if (val != null)
+                {
+                    LogService.LogEvent(SystemService.SystemNamesID[ast.Key.ToLower()] + ": " + val.LootId);
+                }
+            }
+
+            LogService.LogEvent("--------------");
         }
 
         #region GraphMap

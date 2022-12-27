@@ -28,6 +28,14 @@ namespace Freelancer_Companion_by_Dormammu.Services
         public Dictionary<string, UniverseBase> UniverseBasesData { get; set; }
         public List<string> SystemsID { get; set; }
         /// <summary>
+        /// Список предметов в игре
+        /// </summary>
+        public List<Equipment> Equipments { get; set; }
+        /// <summary>
+        /// ID системы - Список зон добычи ископаемых
+        /// </summary>
+        public Dictionary<string, List<LootableZone>> SysAsteroids { get; set; }
+        /// <summary>
         /// ID - Name системы
         /// </summary>
         public Dictionary<string, string> SystemNamesID { get; set; }
@@ -51,7 +59,6 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// </summary>
         public Dictionary<string, string> SystemsNameId { get; set; }
         public bool IsRussian { get; set; }
-        public int[,] MatrixRoads { get; set; }
 
         public SystemService(bool isRussian)
         {
@@ -59,6 +66,8 @@ namespace Freelancer_Companion_by_Dormammu.Services
             UniverseBasesData = new Dictionary<string, UniverseBase>();
             SystemNamesID = new Dictionary<string, string>();
             SystemsNameId = new Dictionary<string, string>();
+            SysAsteroids = new Dictionary<string, List<LootableZone>>();
+            Equipments = new List<Equipment>();
             SystemsID = new List<string>();
             SupriseID = new List<string>();
             HollRoads = new List<string>();
@@ -80,11 +89,13 @@ namespace Freelancer_Companion_by_Dormammu.Services
             return resultBuilder.ToString();
         }
 
-        public void GetInfo(ComboBox blockInfo, ComboBox road_1, ComboBox road_2, LogService logService)
+        public void GetInfo(ComboBox blockInfo, ComboBox road_1, ComboBox road_2, ComboBox equipments, LogService logService)
         {
             try
             {   File.Delete("log.txt"); //чищу логи
                 GetAllSystems();
+                GetAllEquipments();
+                GetAllAsteroids();
                 var dirInfoSystems = new DirectoryInfo("SYSTEMS");
                 var dirInfoArray = dirInfoSystems.GetDirectories();
                 //получаю список грузов
@@ -167,8 +178,6 @@ namespace Freelancer_Companion_by_Dormammu.Services
                 ArraySystemsCombobox = ArraySystemsCombobox.Where(x => x != null).ToArray();
                 logService.LogEvent("Список систем определён");
 
-                //создаём гигантский ступенчатый масссив для поисковика
-                MatrixRoads = new int[ArraySystemsCombobox.Length, ArraySystemsCombobox.Length];
                 //обработать спсиок всех связей между системами, все гиперпереходы
                 foreach (var sys in ArraySystemsCombobox)
                 {
@@ -190,22 +199,21 @@ namespace Freelancer_Companion_by_Dormammu.Services
                 //перебирает список корректный систем
                 for(int i = 0; i < ArraySystemsCombobox.Length; i++)
                 {
-                    var sys = ArraySystemsCombobox[i];
-                    //перебирает список маршрутов
-                    foreach (var road in HollRoads)
-                    { //хотим найти все маршруты которые ведут в конкретную систему
-                        var frstSys = road.Substring(0, road.IndexOf('='));
-                        var lstSys = road.Substring(road.IndexOf('=') + 1);
-                        var index = Array.IndexOf(ArraySystemsCombobox, lstSys);
-                        if(frstSys.Contains(sys) && UniverseSystemsData.ContainsKey(lstSys))
-                            MatrixRoads[i,index] = 1;
-                    }
-
                     if (!SystemsNameId.ContainsKey(UniverseSystemsData[ArraySystemsCombobox[i]].Name))
                         SystemsNameId.Add(UniverseSystemsData[ArraySystemsCombobox[i]].Name, ArraySystemsCombobox[i]);
                     else
                         logService.LogEvent(UniverseSystemsData[ArraySystemsCombobox[i]].Name);
                 }
+
+                //формирую combobox для поиска элемента
+                foreach (var eq in Equipments)
+                {
+                    ComboBoxItem item = new ComboBoxItem();
+                    item.Text = (string.IsNullOrEmpty(eq.Name) ? eq.Id : eq.Name);
+                    item.ID = eq.Id;
+                    equipments.Items.Add(item);
+                }
+
                 logService.LogEvent("Список маршрутов определён");
             }
             catch (Exception exception)
@@ -427,6 +435,86 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         var idS = line.Substring(0, line.IndexOf('='));
                         var nameS = line.Substring(line.IndexOf('=') + 1);
                         SystemNamesID.Add(idS, nameS);
+                    }
+                }
+            }
+        }
+
+        private void GetAllEquipments()
+        {
+            //получаю список систем
+            using (var reader = new StreamReader("equipments.ini"))
+            {
+                var line = string.Empty;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        var tmp1 = line.Substring(line.IndexOf(',') + 1, line.Length - (line.IndexOf(',') + 1));
+                        var tmp2 = tmp1.Substring(tmp1.IndexOf(',') + 1, tmp1.Length - (tmp1.IndexOf(',') + 1));
+                        var tmp3 = tmp2.Substring(tmp2.IndexOf(',') + 1, tmp2.Length - (tmp2.IndexOf(',') + 1));
+                        var tmp4 = tmp3.Substring(tmp3.IndexOf(',') + 1, tmp3.Length - (tmp3.IndexOf(',') + 1));
+                        var Id = tmp4.Substring(0, tmp4.IndexOf(',')).Trim();
+                        var tmp5 = tmp4.Substring(tmp4.IndexOf(',') + 1, tmp4.Length - (tmp4.IndexOf(',') + 1));
+                        var Name = tmp5.Substring(0, tmp5.IndexOf(',')).Trim();
+                        Equipments.Add(new Equipment() { Id = Id, Name = Name });
+                    }
+                }
+            }
+        }
+
+        private void GetAllAsteroids()
+        {
+            var dirInfoSystems = new DirectoryInfo("ASTEROIDS");
+            var files = dirInfoSystems.GetFiles();
+
+            foreach(var file in files)
+            {
+                if (!file.Name.Contains('_')) continue;
+                var idSys = file.Name.Substring(0, file.Name.IndexOf('_'));
+                //получаю список груза
+                using (var reader = new StreamReader(Path.Combine("ASTEROIDS", file.Name)))
+                {
+                    var line = string.Empty;
+                    bool loot = false;
+                    var nameZone = string.Empty;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (!string.IsNullOrEmpty(line))
+                        {
+                            if (line.Contains("[LootableZone]")) loot = true;
+                            if (line.Contains("[TexturePanels]")) loot = false;
+                            if (loot)
+                            {
+                                //id зоны
+                                if(line.Contains("zone ="))
+                                {
+                                    nameZone = line.Substring(line.IndexOf('=') + 1, line.Length - (line.IndexOf('=') + 1)).Trim();
+                                }
+                                //Груз астероида
+                                if(line.Contains("asteroid_loot_commodity ="))
+                                {
+                                    var lootes = line.Substring(line.IndexOf('=') + 1, line.Length - (line.IndexOf('=') + 1)).Trim();
+                                    if (SysAsteroids.ContainsKey(idSys))
+                                    {
+                                        SysAsteroids[idSys].Add(new LootableZone()
+                                        {
+                                            LootId = lootes.ToLower(),
+                                            ZoneName = nameZone.ToLower()
+                                        });
+                                    }
+                                    else
+                                    {
+
+                                        SysAsteroids.Add(idSys, new List<LootableZone>() { new LootableZone()
+                                        {
+                                            LootId = lootes.ToLower(),
+                                            ZoneName = nameZone.ToLower()
+                                        }});
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

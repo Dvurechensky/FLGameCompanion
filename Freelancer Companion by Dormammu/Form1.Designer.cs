@@ -49,6 +49,8 @@
             this.comboBoxRoadLast = new System.Windows.Forms.ComboBox();
             this.checkBoxRusNames = new System.Windows.Forms.CheckBox();
             this.buttonCloseMap = new System.Windows.Forms.Button();
+            this.comboBoxSearch = new System.Windows.Forms.ComboBox();
+            this.labelSearch = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.Map)).BeginInit();
             this.SuspendLayout();
             // 
@@ -72,7 +74,7 @@
             this.comboBoxSystems.FormattingEnabled = true;
             this.comboBoxSystems.Location = new System.Drawing.Point(806, 1);
             this.comboBoxSystems.Name = "comboBoxSystems";
-            this.comboBoxSystems.Size = new System.Drawing.Size(426, 24);
+            this.comboBoxSystems.Size = new System.Drawing.Size(406, 24);
             this.comboBoxSystems.TabIndex = 2;
             this.comboBoxSystems.SelectedIndexChanged += new System.EventHandler(this.comboBoxSystems_SelectedIndexChanged);
             this.comboBoxSystems.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxSystems_KeyPress);
@@ -84,7 +86,7 @@
             this.labelSystemss.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.labelSystemss.Font = new System.Drawing.Font("MS PGothic", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelSystemss.ForeColor = System.Drawing.Color.FloralWhite;
-            this.labelSystemss.Location = new System.Drawing.Point(1238, 1);
+            this.labelSystemss.Location = new System.Drawing.Point(1228, 4);
             this.labelSystemss.Name = "labelSystemss";
             this.labelSystemss.Size = new System.Drawing.Size(44, 21);
             this.labelSystemss.TabIndex = 3;
@@ -94,9 +96,9 @@
             // LoggerRichTextBox
             // 
             this.LoggerRichTextBox.Font = new System.Drawing.Font("Microsoft YaHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.LoggerRichTextBox.Location = new System.Drawing.Point(806, 443);
+            this.LoggerRichTextBox.Location = new System.Drawing.Point(806, 473);
             this.LoggerRichTextBox.Name = "LoggerRichTextBox";
-            this.LoggerRichTextBox.Size = new System.Drawing.Size(476, 355);
+            this.LoggerRichTextBox.Size = new System.Drawing.Size(476, 325);
             this.LoggerRichTextBox.TabIndex = 4;
             this.LoggerRichTextBox.Text = "";
             // 
@@ -115,7 +117,7 @@
             this.checkBoxBases.AutoSize = true;
             this.checkBoxBases.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxBases.Location = new System.Drawing.Point(806, 31);
-            this.checkBoxBases.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxBases.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxBases.Name = "checkBoxBases";
             this.checkBoxBases.Size = new System.Drawing.Size(128, 24);
             this.checkBoxBases.TabIndex = 6;
@@ -128,7 +130,7 @@
             this.checkBoxContainers.AutoSize = true;
             this.checkBoxContainers.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxContainers.Location = new System.Drawing.Point(805, 53);
-            this.checkBoxContainers.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxContainers.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxContainers.Name = "checkBoxContainers";
             this.checkBoxContainers.Size = new System.Drawing.Size(175, 24);
             this.checkBoxContainers.TabIndex = 7;
@@ -141,7 +143,7 @@
             this.checkBoxAll.AutoSize = true;
             this.checkBoxAll.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxAll.Location = new System.Drawing.Point(1033, 27);
-            this.checkBoxAll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxAll.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAll.Name = "checkBoxAll";
             this.checkBoxAll.Size = new System.Drawing.Size(117, 24);
             this.checkBoxAll.TabIndex = 8;
@@ -154,7 +156,7 @@
             this.checkBoxHoll.AutoSize = true;
             this.checkBoxHoll.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxHoll.Location = new System.Drawing.Point(1032, 53);
-            this.checkBoxHoll.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxHoll.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxHoll.Name = "checkBoxHoll";
             this.checkBoxHoll.Size = new System.Drawing.Size(152, 24);
             this.checkBoxHoll.TabIndex = 9;
@@ -164,7 +166,7 @@
             // 
             // textBoxX
             // 
-            this.textBoxX.Location = new System.Drawing.Point(1214, 31);
+            this.textBoxX.Location = new System.Drawing.Point(1214, 28);
             this.textBoxX.Name = "textBoxX";
             this.textBoxX.Size = new System.Drawing.Size(68, 20);
             this.textBoxX.TabIndex = 10;
@@ -173,7 +175,7 @@
             // 
             // textBoxY
             // 
-            this.textBoxY.Location = new System.Drawing.Point(1214, 57);
+            this.textBoxY.Location = new System.Drawing.Point(1214, 53);
             this.textBoxY.Name = "textBoxY";
             this.textBoxY.Size = new System.Drawing.Size(68, 20);
             this.textBoxY.TabIndex = 11;
@@ -182,7 +184,7 @@
             // 
             // textBoxZ
             // 
-            this.textBoxZ.Location = new System.Drawing.Point(1214, 83);
+            this.textBoxZ.Location = new System.Drawing.Point(1214, 79);
             this.textBoxZ.Name = "textBoxZ";
             this.textBoxZ.Size = new System.Drawing.Size(68, 20);
             this.textBoxZ.TabIndex = 12;
@@ -244,7 +246,7 @@
             this.comboBoxRoadFirst.DisplayMember = "Add";
             this.comboBoxRoadFirst.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxRoadFirst.FormattingEnabled = true;
-            this.comboBoxRoadFirst.Location = new System.Drawing.Point(1019, 126);
+            this.comboBoxRoadFirst.Location = new System.Drawing.Point(1019, 115);
             this.comboBoxRoadFirst.Name = "comboBoxRoadFirst";
             this.comboBoxRoadFirst.Size = new System.Drawing.Size(263, 24);
             this.comboBoxRoadFirst.TabIndex = 17;
@@ -256,7 +258,7 @@
             this.comboBoxRoadLast.DisplayMember = "Add";
             this.comboBoxRoadLast.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxRoadLast.FormattingEnabled = true;
-            this.comboBoxRoadLast.Location = new System.Drawing.Point(1019, 156);
+            this.comboBoxRoadLast.Location = new System.Drawing.Point(1019, 155);
             this.comboBoxRoadLast.Name = "comboBoxRoadLast";
             this.comboBoxRoadLast.Size = new System.Drawing.Size(263, 24);
             this.comboBoxRoadLast.TabIndex = 18;
@@ -266,7 +268,7 @@
             this.checkBoxRusNames.AutoSize = true;
             this.checkBoxRusNames.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBoxRusNames.Location = new System.Drawing.Point(1033, 79);
-            this.checkBoxRusNames.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxRusNames.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxRusNames.Name = "checkBoxRusNames";
             this.checkBoxRusNames.Size = new System.Drawing.Size(118, 24);
             this.checkBoxRusNames.TabIndex = 19;
@@ -289,12 +291,39 @@
             this.buttonCloseMap.UseVisualStyleBackColor = false;
             this.buttonCloseMap.Click += new System.EventHandler(this.buttonCloseMap_Click);
             // 
+            // comboBoxSearch
+            // 
+            this.comboBoxSearch.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBoxSearch.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.comboBoxSearch.DisplayMember = "Add";
+            this.comboBoxSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxSearch.FormattingEnabled = true;
+            this.comboBoxSearch.Location = new System.Drawing.Point(988, 443);
+            this.comboBoxSearch.Name = "comboBoxSearch";
+            this.comboBoxSearch.Size = new System.Drawing.Size(263, 24);
+            this.comboBoxSearch.TabIndex = 21;
+            this.comboBoxSearch.SelectedIndexChanged += new System.EventHandler(this.comboBoxSearch_SelectedIndexChanged);
+            // 
+            // labelSearch
+            // 
+            this.labelSearch.AutoSize = true;
+            this.labelSearch.BackColor = System.Drawing.Color.Cornsilk;
+            this.labelSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelSearch.Location = new System.Drawing.Point(834, 445);
+            this.labelSearch.Name = "labelSearch";
+            this.labelSearch.Size = new System.Drawing.Size(148, 20);
+            this.labelSearch.TabIndex = 22;
+            this.labelSearch.Text = "Поиск элемента";
+            // 
             // FreelancerCompanionDvurechensky
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
             this.ClientSize = new System.Drawing.Size(1294, 800);
+            this.Controls.Add(this.labelSearch);
+            this.Controls.Add(this.comboBoxSearch);
             this.Controls.Add(this.buttonCloseMap);
             this.Controls.Add(this.checkBoxRusNames);
             this.Controls.Add(this.comboBoxRoadLast);
@@ -350,6 +379,8 @@
         private System.Windows.Forms.ComboBox comboBoxRoadLast;
         private System.Windows.Forms.CheckBox checkBoxRusNames;
         private System.Windows.Forms.Button buttonCloseMap;
+        private System.Windows.Forms.ComboBox comboBoxSearch;
+        private System.Windows.Forms.Label labelSearch;
     }
 }
 
