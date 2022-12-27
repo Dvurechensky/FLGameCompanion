@@ -534,6 +534,8 @@ namespace Freelancer_Companion_by_Dormammu
                 {
                     LogService.LogEvent(SystemService.SystemNamesID[ast.Key.ToLower()] + ": " + val.LootId);
                 }
+
+               
             }
 
             LogService.LogEvent("--------------");
