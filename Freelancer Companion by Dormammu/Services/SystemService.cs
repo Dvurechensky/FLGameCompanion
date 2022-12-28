@@ -42,7 +42,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// <summary>
         /// Cписок контейнеров
         /// </summary>
-        public List<string> SupriseID { get; set; }
+        public List<Loadout> Loadouts { get; set; }
         /// <summary>
         /// Список путей от систем до систем
         /// </summary>
@@ -50,6 +50,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
         public string IDCurrent { get; set; }
         private string BaseId { get; set; }
         private string SystemID { get; set; }
+        private int SurptiseNick_ID { get; set; }
         /// <summary>
         /// Массив очищенных айдишников систем для ComboBox
         /// </summary>
@@ -69,7 +70,7 @@ namespace Freelancer_Companion_by_Dormammu.Services
             SysAsteroids = new Dictionary<string, List<LootableZone>>();
             Equipments = new List<Equipment>();
             SystemsID = new List<string>();
-            SupriseID = new List<string>();
+            Loadouts = new List<Loadout>();
             HollRoads = new List<string>();
             IsRussian = isRussian;
         }
@@ -224,10 +225,29 @@ namespace Freelancer_Companion_by_Dormammu.Services
 
         private void GetLoadout(string line, LogService logService)
         {
-            if (line.Contains("nickname"))
+            if (line.Contains("nickname ="))
             {
-                var nick = (line.Substring(10, line.Length - 10)).Trim().ToLower();
-                SupriseID.Add(nick);
+                SurptiseNick_ID++;
+                var nickName = (line.Substring(10, line.Length - 10)).Trim().ToLower();
+                Loadouts.Add(new Loadout() { Name = nickName });
+            }
+            if (line.Contains("archetype ="))
+            {
+                var arch = (line.Substring(11, line.Length - 11)).Trim().ToLower();
+                Loadouts[SurptiseNick_ID - 1].Archetype = arch;
+            }
+            if (line.Contains("cargo ="))
+            {
+                var cargoNameCount = (line.Substring(7, line.Length - 7)).Trim().ToLower();
+                var name = cargoNameCount.Substring(0, cargoNameCount.IndexOf(','));
+                var count = cargoNameCount.Substring(cargoNameCount.IndexOf(',') + 1, cargoNameCount.Length - (cargoNameCount.IndexOf(',') + 1));
+                int.TryParse(count, out int res);
+                logService.LogEvent(name);
+                Loadouts[SurptiseNick_ID - 1].Cargo.Add(new Cargo()
+                {
+                    Name = name,
+                    Count = res
+                });
             }
         }
 
@@ -309,17 +329,20 @@ namespace Freelancer_Companion_by_Dormammu.Services
             var sr = new StreamReader(UniverseSystemsData[systemId].INI);
             var data = sr.ReadLine();
             var Object = false;
+            var Zone = false;
             while (data != null)
             {
                 if (data.Contains("Object"))
                 {
                     Object = true;
+                    Zone = false;
                     if (UniverseSystemsData[systemId].Objects == null)
                         UniverseSystemsData[systemId].Objects = new List<ObjectSystem>();
                 }
                 if (data.Contains("Zone"))
                 {
                     Object = false;
+                    Zone = true;
                 }
                 if (Object)
                 {
@@ -378,12 +401,12 @@ namespace Freelancer_Companion_by_Dormammu.Services
                     }
                     if (data.Contains("archetype ="))
                     {
-                        var archetype = (data.Substring(13, data.Length - 13)).Trim();
+                        var archetype = (data.Substring(11, data.Length - 11)).Trim();
                         UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].Archetype = archetype;
                     }
                     if (data.Contains("loadout ="))
                     {
-                        var loadout = (data.Substring(11, data.Length - 11)).Trim();
+                        var loadout = (data.Substring(9, data.Length - 9)).Trim();
                         UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].Loadout = loadout;
                     }
                     if (data.Contains("goto =") && !data.Contains(';'))
@@ -393,6 +416,52 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         var nameS = SystemNamesID[idS];
                         UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].Goto = nameS;
                         UniverseSystemsData[systemId].Objects[UniverseSystemsData[systemId].Objects.Count - 1].GotoID = idS;
+                    }
+                }
+                if(Zone)
+                {
+                    if (data.Contains("nickname ="))
+                    {
+                        var id_name = (data.Substring(10, data.Length - 10)).Trim();
+                        UniverseSystemsData[systemId].Zones.Add(new ZoneSystem()
+                        {
+                            ID = id_name
+                        });
+                    }
+                    if (data.Contains("pos ="))
+                    {
+                        var position = (data.Substring(5, data.Length - 5)).Trim();
+                        if (position.Contains(";"))
+                            position = (position.Substring(0, position.IndexOf(';')).Trim());
+                        int[] pos = position.Split(',').Select(n =>
+                        {
+                            int val = 0;
+                            n = n.Trim();
+                            var state = int.TryParse(n, out val);
+                            if (state == false)
+                            {
+                                double td = 0;
+                                if (n.Contains('.'))
+                                {
+                                    IFormatProvider formatter = new NumberFormatInfo { NumberDecimalSeparator = "." };
+                                    td = double.Parse(n, formatter);
+                                    int i = (int)Math.Round(td, MidpointRounding.AwayFromZero);
+                                    val = i;
+                                    return val;
+                                }
+                                else
+                                {
+                                    File.AppendAllText("log.txt", "Error Parse Position - " + position + " - " + UniverseSystemsData[systemId].INI + "\n");
+                                    return 0;
+                                }
+                            }
+                            else return val;
+                        }).ToArray();
+                        if (pos == null)
+                        {
+                            logService.ErrorLogEvent(systemId);
+                        }
+                        else UniverseSystemsData[systemId].Zones[UniverseSystemsData[systemId].Zones.Count - 1].Pos = pos;
                     }
                 }
                 data = sr.ReadLine();

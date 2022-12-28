@@ -18,7 +18,13 @@ namespace Freelancer_Companion_by_Dormammu
     /// <summary>
     /// Нужно положить в корень приложения  (из Freelancer)
     /// Папку - SYSTEMS
-    /// Файл - universe.ini
+    /// Папку - ASTEROIDS (внутри только файлы txt и ini оставить)
+    /// Файл - universe.ini - из исходников игры
+    /// Файл - loadouts.ini - из исходников игры
+    /// Файл - equipments.ini - Формат - 3, 4, 534954, 0, orchid_st_torpedo_ammo, Торпеда, 1000, 0.00, 0, 0
+    /// в формате взятом из выгрузки для БД в FLStat для Freelancer
+    /// Файл - systems.ini -  Формат - start01=Пенсильвания
+    /// в формате взятом из выгрузки для БД в FLStat для Freelancer (предварительно убрать одинаковые названия систем)
     /// Dll - nameresources.dll, SBM.dll, SBM2.dll, SBM3.dll
     /// </summary>
     public partial class FreelancerCompanionDvurechensky : Form
@@ -260,22 +266,7 @@ namespace Freelancer_Companion_by_Dormammu
                 {
                     var id = objectElement.ID.ToLower();
                     bool ok = false;
-                    if (id.Contains("suprise"))
-                    {
-                        ok = true;
-                    }
-                    else
-                    {
-                        if (objectElement.Archetype != null && objectElement.Archetype.Contains("suprise"))
-                        {
-                            ok = true;
-                        }
-                        else
-                        {
-                            if (objectElement.Loadout != null && SystemService.SupriseID.Contains(objectElement.Loadout)) ok = true;
-                            else ok = false;
-                        }
-                    }
+                    if (objectElement.Loadout != null && SystemService.Loadouts.Find((l) => l.Name.Contains(objectElement.Loadout.ToLower())) != null) ok = true;
 
                     if (!ok) continue;
 
@@ -507,11 +498,64 @@ namespace Freelancer_Companion_by_Dormammu
         {
             var combo = (ComboBox)sender;
 
-            LogService.LogEvent("Ищем элемент " + comboBoxSearch.Text + "...");
+            LogService.LogEvent("Ищем элемент " + comboBoxSearch.Text + "(" + (combo.SelectedItem as ComboBoxItem).ID + ")" + "...");
 
             //Ищу совпадения в контейнерах
+            LogService.LogEvent("--------------");
+            foreach (var ast in SystemService.Loadouts)
+            {
+                var val = ast.Cargo.Find((zone) => zone.Name.Contains((combo.SelectedItem as ComboBoxItem).ID.ToLower()));
+                if (val != null)
+                {
+                    foreach(var sys in SystemService.UniverseSystemsData)
+                    {
+                        var obj = sys.Value.Objects?.FindAll((el) => el.Loadout != null && el.Loadout.ToLower().Contains(ast.Name));
+                        if (obj != null && obj.Count > 0)
+                        {
+                            LogService.LogEvent("SYSTEM: " + SystemService.SystemNamesID[sys.Key.ToLower()] + " L: " + ast.Name + " - " + val.Name + " / " + val.Count);
+                        }
+                    }
+                }
+            }
+
+
+            LogService.LogEvent("--------------");
 
             //Ищу совпадения в астероидах
+            foreach (var ast in SystemService.SysAsteroids)
+            {
+                var val = ast.Value.FindAll((zone) => zone.LootId.Contains((combo.SelectedItem as ComboBoxItem).ID));
+                bool ok = false;
+                string zoneName = string.Empty;
+                foreach(var v in val)
+                {
+                    if(v.ZoneName != null && v.ZoneName.Length > 0)
+                    {
+                        zoneName = zoneName.ToLower();
+                        ok = true;
+                        break;
+                    }
+                }
+
+                if (val != null && val.Count > 0 && ok)
+                {
+                    foreach (var sys in SystemService.UniverseSystemsData)
+                    {
+                        var obj = sys.Value.Zones?.FindAll((el) => el.ID.ToLower().Contains(zoneName));
+                        if (obj != null && obj.Count > 0)
+                        {
+                            LogService.LogEvent(SystemService.SystemNamesID[ast.Key.ToLower()] + " - " + 
+                                " POS: X: " + obj[0].Pos[0] + " Y: " + obj[0].Pos[1] + " Z: " + obj[0].Pos[2]);
+                        }
+                    }
+                }
+                if(val != null && val.Count > 0 && !ok) //EXCLUSION ZONE в ASTEROIDS
+                {
+                    LogService.LogEvent(SystemService.SystemNamesID[ast.Key.ToLower()] + " - " + val[0].LootId);
+                }
+            }
+
+            LogService.LogEvent("--------------");            
             //foreach(var ast in SystemService.SysAsteroids)
             //{
             //    foreach (var item in ast.Value)
@@ -524,21 +568,6 @@ namespace Freelancer_Companion_by_Dormammu
             //            el.Id.Contains(item.LootId.ToLower())).Id);
             //    }
             //}
-
-            LogService.LogEvent("--------------");
-
-            foreach (var ast in SystemService.SysAsteroids)
-            {
-                var val = ast.Value.Find((zone) => zone.LootId.Contains((combo.SelectedItem as ComboBoxItem).ID));
-                if (val != null)
-                {
-                    LogService.LogEvent(SystemService.SystemNamesID[ast.Key.ToLower()] + ": " + val.LootId);
-                }
-
-               
-            }
-
-            LogService.LogEvent("--------------");
         }
 
         #region GraphMap
