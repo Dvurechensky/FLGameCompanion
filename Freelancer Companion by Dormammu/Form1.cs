@@ -499,27 +499,7 @@ namespace Freelancer_Companion_by_Dormammu
             var combo = (ComboBox)sender;
 
             LogService.LogEvent("Ищем элемент " + comboBoxSearch.Text + "(" + (combo.SelectedItem as ComboBoxItem).ID + ")" + "...");
-
-            //Ищу совпадения в контейнерах
-            LogService.LogEvent("--------------");
-            foreach (var ast in SystemService.Loadouts)
-            {
-                var val = ast.Cargo.Find((zone) => zone.Name.Contains((combo.SelectedItem as ComboBoxItem).ID.ToLower()));
-                if (val != null)
-                {
-                    foreach(var sys in SystemService.UniverseSystemsData)
-                    {
-                        var obj = sys.Value.Objects?.FindAll((el) => el.Loadout != null && el.Loadout.ToLower().Contains(ast.Name));
-                        if (obj != null && obj.Count > 0)
-                        {
-                            LogService.LogEvent("SYSTEM: " + SystemService.SystemNamesID[sys.Key.ToLower()] + " L: " + ast.Name + " - " + val.Name + " / " + val.Count);
-                        }
-                    }
-                }
-            }
-
-
-            LogService.LogEvent("--------------");
+            LogService.LogEvent("----Астероиды----");
 
             //Ищу совпадения в астероидах
             foreach (var ast in SystemService.SysAsteroids)
@@ -527,9 +507,9 @@ namespace Freelancer_Companion_by_Dormammu
                 var val = ast.Value.FindAll((zone) => zone.LootId.Contains((combo.SelectedItem as ComboBoxItem).ID));
                 bool ok = false;
                 string zoneName = string.Empty;
-                foreach(var v in val)
+                foreach (var v in val)
                 {
-                    if(v.ZoneName != null && v.ZoneName.Length > 0)
+                    if (v.ZoneName != null && v.ZoneName.Length > 0)
                     {
                         zoneName = zoneName.ToLower();
                         ok = true;
@@ -544,30 +524,38 @@ namespace Freelancer_Companion_by_Dormammu
                         var obj = sys.Value.Zones?.FindAll((el) => el.ID.ToLower().Contains(zoneName));
                         if (obj != null && obj.Count > 0)
                         {
-                            LogService.LogEvent(SystemService.SystemNamesID[ast.Key.ToLower()] + " - " + 
+                            LogService.LogEvent(SystemService.SystemNamesID[ast.Key.ToLower()] + " - " +
                                 " POS: X: " + obj[0].Pos[0] + " Y: " + obj[0].Pos[1] + " Z: " + obj[0].Pos[2]);
                         }
                     }
                 }
-                if(val != null && val.Count > 0 && !ok) //EXCLUSION ZONE в ASTEROIDS
+                if (val != null && val.Count > 0 && !ok) //EXCLUSION ZONE в ASTEROIDS
                 {
                     LogService.LogEvent(SystemService.SystemNamesID[ast.Key.ToLower()] + " - " + val[0].LootId);
                 }
             }
 
-            LogService.LogEvent("--------------");            
-            //foreach(var ast in SystemService.SysAsteroids)
-            //{
-            //    foreach (var item in ast.Value)
-            //    {
-            //        var it = SystemService.Equipments.Find((el) => el.Id.Contains(item.LootId.ToLower()));
-            //        if (it != null)
-            //            LogService.LogEvent(SystemService.Equipments.Find((el) => 
-            //            el.Id.Contains(item.LootId.ToLower())).Name + "/" + 
-            //            SystemService.Equipments.Find((el) => 
-            //            el.Id.Contains(item.LootId.ToLower())).Id);
-            //    }
-            //}
+            LogService.LogEvent("------------------");
+            LogService.LogEvent("----контейнеры----");
+
+            //Ищу совпадения в контейнерах
+            foreach (var ast in SystemService.Loadouts)
+            {
+                var val = ast.Cargo.Find((zone) => zone.Name.Contains((combo.SelectedItem as ComboBoxItem).ID.ToLower()));
+                if (val != null)
+                {
+                    foreach (var sys in SystemService.UniverseSystemsData)
+                    {
+                        var obj = sys.Value.Objects?.FindAll((el) => el.Loadout != null && el.Loadout.ToLower().Contains(ast.Name));
+                        if (obj != null && obj.Count > 0)
+                        {
+                            LogService.LogEvent("SYSTEM: " + SystemService.SystemNamesID[sys.Key.ToLower()] + " L: " + ast.Name + " - " + val.Name + " / " + val.Count);
+                        }
+                    }
+                }
+            }
+
+            LogService.LogEvent("------------------");
         }
 
         #region GraphMap

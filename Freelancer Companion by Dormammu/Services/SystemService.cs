@@ -25,7 +25,13 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// Все данные системы
         /// </summary>
         public Dictionary<string, UniverseSystem> UniverseSystemsData { get; set; }
+        /// <summary>
+        /// Список баз 
+        /// </summary>
         public Dictionary<string, UniverseBase> UniverseBasesData { get; set; }
+        /// <summary>
+        /// ID Систнем
+        /// </summary>
         public List<string> SystemsID { get; set; }
         /// <summary>
         /// Список предметов в игре
@@ -40,6 +46,10 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// </summary>
         public Dictionary<string, string> SystemNamesID { get; set; }
         /// <summary>
+        /// Name - Id систем
+        /// </summary>
+        public Dictionary<string, string> SystemsNameId { get; set; }
+        /// <summary>
         /// Cписок контейнеров
         /// </summary>
         public List<Loadout> Loadouts { get; set; }
@@ -47,19 +57,18 @@ namespace Freelancer_Companion_by_Dormammu.Services
         /// Список путей от систем до систем
         /// </summary>
         public List<string> HollRoads { get; set; } 
-        public string IDCurrent { get; set; }
-        private string BaseId { get; set; }
-        private string SystemID { get; set; }
-        private int SurptiseNick_ID { get; set; }
         /// <summary>
         /// Массив очищенных айдишников систем для ComboBox
         /// </summary>
         public string[] ArraySystemsCombobox { get; set; }
         /// <summary>
-        /// Name - Id систем
+        /// Обрабатывать русские наименования в алгоритмах
         /// </summary>
-        public Dictionary<string, string> SystemsNameId { get; set; }
         public bool IsRussian { get; set; }
+
+        private string BaseId { get; set; }
+        private string SystemID { get; set; }
+        private int SurptiseNick_ID { get; set; }
 
         public SystemService(bool isRussian)
         {
@@ -73,21 +82,6 @@ namespace Freelancer_Companion_by_Dormammu.Services
             Loadouts = new List<Loadout>();
             HollRoads = new List<string>();
             IsRussian = isRussian;
-        }
-
-        /// <summary>
-        /// Чтение элемента из DLL
-        /// </summary>
-        /// <param name="file">Адрес до файла</param>
-        /// <param name="number">Номер элемента</param>
-        /// <returns></returns>
-        public string ExtractStringFromDLL(string file, int number)
-        {
-            var lib = LoadLibrary(file);
-            var resultBuilder = new StringBuilder(2048);
-            LoadString(lib, number, resultBuilder, resultBuilder.Capacity);
-            FreeLibrary(lib);
-            return resultBuilder.ToString();
         }
 
         public void GetInfo(ComboBox blockInfo, ComboBox road_1, ComboBox road_2, ComboBox equipments, LogService logService)
@@ -509,6 +503,9 @@ namespace Freelancer_Companion_by_Dormammu.Services
             }
         }
 
+        /// <summary>
+        /// Получаение всех наименований оброрудования в игре
+        /// </summary>
         private void GetAllEquipments()
         {
             //получаю список систем
@@ -532,6 +529,9 @@ namespace Freelancer_Companion_by_Dormammu.Services
             }
         }
 
+        /// <summary>
+        /// Получаение всех данных по астероидным полям
+        /// </summary>
         private void GetAllAsteroids()
         {
             var dirInfoSystems = new DirectoryInfo("ASTEROIDS");
@@ -587,6 +587,21 @@ namespace Freelancer_Companion_by_Dormammu.Services
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Чтение элемента из DLL
+        /// </summary>
+        /// <param name="file">Адрес до файла</param>
+        /// <param name="number">Номер элемента</param>
+        /// <returns></returns>
+        private string ExtractStringFromDLL(string file, int number)
+        {
+            var lib = LoadLibrary(file);
+            var resultBuilder = new StringBuilder(2048);
+            LoadString(lib, number, resultBuilder, resultBuilder.Capacity);
+            FreeLibrary(lib);
+            return resultBuilder.ToString();
         }
     }
 }
