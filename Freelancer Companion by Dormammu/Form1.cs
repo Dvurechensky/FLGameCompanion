@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using WindowsFormsProject;
+using System.Reflection;
 
 namespace Freelancer_Companion_by_Dormammu
 {
@@ -315,7 +316,7 @@ namespace Freelancer_Companion_by_Dormammu
             using (Graphics gr = Graphics.FromImage(ImageMap))
             {
                 var counter = 0;
-                foreach (var objectElement in SystemService.UniverseSystemsData[CurrentSystem].Objects.FindAll((objectEl) => (objectEl.ID.Contains("_hole") || objectEl.ID.ToLower().Contains(CurrentSystem.ToLower()+"_to")) && !objectEl.ID.Contains("Zone_")))
+                foreach (var objectElement in SystemService.UniverseSystemsData[CurrentSystem].Objects.FindAll((objectEl) => (objectEl.GotoID != null)))//objectEl.ID.Contains("_hole") || objectEl.ID.ToLower().Contains(CurrentSystem.ToLower()+"_to")) && !objectEl.ID.Contains("Zone_"))
                 {
                     int x = (int)Math.Round(KeyResize * objectElement.Pos[0], MidpointRounding.AwayFromZero);
                     int y = (int)Math.Round(KeyResize * objectElement.Pos[2], MidpointRounding.AwayFromZero);
@@ -680,17 +681,89 @@ namespace Freelancer_Companion_by_Dormammu
                 id2 = comboBoxRoadLast.Text;
             }
 
-            var g = new Graph();
-            gXLogic.Graph = GenerateGraph();
-            foreach (var vertice in gXLogic.Graph.Vertices)
-                g.AddVertex(vertice.Text);
-            foreach (var edge in gXLogic.Graph.Edges)
-                g.AddEdge(edge.Source.Text, edge.Target.Text, (int)edge.Weight);
-            var dijkstra = new Dijkstra(g);
-            var path = dijkstra.FindShortestPath(id1, id2);
-            LogService.LogEvent(path);
+            var pth = string.Empty;
 
-            VerticleRoad = path.Split('=');
+            if (checkBoxSearchState.Checked)
+            {
+                //чистим от  однонаправленных связей
+                var edges = SystemService.HollRoads.FindAll((road) =>
+                {
+                    var road_1 = road.Substring(0, road.IndexOf('=')); //[Оптимум] какой-то Оптимум=Неизвестный сектор
+                    var road_2 = road.Substring(road.IndexOf('=') + 1); //[Неизвестный сектор] какой-то Оптимум=Неизвестный сектор
+                    if (SystemService.HollRoads.Contains(road_2 + '=' + road_1)) return true; //Неизвестный сектор=Оптимум
+                    return false;
+                });
+
+                var g = new Graph();
+                gXLogic.Graph = GenerateGraph();
+                foreach (var vertice in gXLogic.Graph.Vertices)
+                    g.AddVertex(vertice.Text);
+                foreach (var edge in edges)
+                {
+                    var roadFirstSys = SystemService.SystemNamesID[edge.Substring(0, edge.IndexOf('='))];
+                    var roadLastSys = SystemService.SystemNamesID[edge.Substring(edge.IndexOf('=') + 1)];
+
+                    g.AddEdge(roadFirstSys, roadLastSys, 1);
+                }
+                    
+                var dijkstra = new Dijkstra(g);
+                pth = dijkstra.FindShortestPath(id1, id2);
+                LogService.LogEvent(pth);
+            }
+            else
+            {
+                GraphC g = new GraphC();
+                for (int i = 0; i < comboBoxSystems.Items.Count; i++)
+                {
+                    Keyss.Add(i);
+                    g.AddKey(i);
+                }
+
+                SystemService.HollRoads.Distinct();
+
+                foreach(var road in SystemService.HollRoads)
+                {
+                    var roadFirstSys = road.Substring(0, road.IndexOf('='));
+                    var roadLastSys = road.Substring((road.IndexOf('=') + 1));
+                    var index_1 = Array.IndexOf(SystemService.ArraySystemsCombobox, roadFirstSys);
+                    var index_2 = Array.IndexOf(SystemService.ArraySystemsCombobox, roadLastSys);
+                    string rs = index_1 + "-" + index_2;
+                    Edge.Add(rs);
+                    g.AddEdge(rs);
+                }
+                Paths.Clear();
+                FindPath(g, Array.IndexOf(SystemService.ArraySystemsCombobox, (comboBoxRoadLast.SelectedItem as ComboBoxItem).ID));
+
+                var pathsResult = Paths.FindAll((res) =>
+                {
+                    res = res.Trim();
+                    if (res.IndexOf(' ') == -1) return false;
+                    if (res.LastIndexOf(' ') == -1) return false;
+
+                    var start = res.Substring(0, res.IndexOf(' '));
+                    int INDEXStop = res.LastIndexOf(' ');
+                    var stop = res.Substring(INDEXStop);
+                    if (!string.IsNullOrEmpty(start) && !string.IsNullOrEmpty(stop) && int.Parse(start.Trim()) == Array.IndexOf(SystemService.ArraySystemsCombobox, (comboBoxRoadFirst.SelectedItem as ComboBoxItem).ID)
+                        && int.Parse(stop.Trim()) == Array.IndexOf(SystemService.ArraySystemsCombobox, (comboBoxRoadLast.SelectedItem as ComboBoxItem).ID))
+                    {
+                        return true;
+                    }
+                    else return false;
+                });
+                foreach(var path in pathsResult)
+                {
+                    var str = path.Trim();
+                    string[] resM = str.Split(' ');
+                    foreach(string s in resM)
+                    {
+                        LogService.LogEvent(SystemService.SystemsID[int.Parse(s)]);
+                        pth += SystemService.SystemNamesID[SystemService.SystemsID[int.Parse(s.Trim())]] + "=";
+                    }
+                    LogService.LogEvent(str);
+                }
+            }
+
+            VerticleRoad = pth.Split('=');
 
             bool startNameState = false;
             string startName = string.Empty;
@@ -700,7 +773,7 @@ namespace Freelancer_Companion_by_Dormammu
             for (int i = 0; i < VerticleRoad.Length; i++)
             {
                 VerticleRoad[i] = VerticleRoad[i].Trim();
-                if(startNameState)
+                if (startNameState)
                 {
                     stopName = VerticleRoad[i].Trim();
                     startNameState = false;
@@ -739,5 +812,109 @@ namespace Freelancer_Companion_by_Dormammu
             wpfHost.Visible = false;
         }
         #endregion
+
+        public void FindPath(GraphC gr, int start) //gr - граф, start - номер вершины, от которой нужно найти пути до остальных
+        {
+            marks = new Dictionary<int, bool>();
+            path = new Stack<int>();
+            source = gr;
+            foreach (int i in gr.Keys)
+                marks.Add(i, false);
+
+            DFS(start);
+        }
+
+        public List<int> Keyss = new List<int>();
+        public List<string> Edge = new List<string>();
+        Dictionary<int, bool> marks;
+        Stack<int> path; //<-- это стек
+        GraphC source; //<-- это моя реализация графа, что там внутри - не важно
+        public List<string> Paths = new List<string>();
+
+        //функция поиска
+        public void DFS(int v)
+        {
+            marks[v] = true;
+            path.Push(v); // сохраняем в стек текущую вершину
+            foreach (int i in path) // выводим путь до текущей
+            {
+                Console.Write(i.ToString() + " ");
+            }
+
+            Console.WriteLine();
+
+            foreach (int i in source[v, Keyss, Edge].NodeLinks)
+                if (marks[i] == false)
+                {
+                    DFS(i);
+                    path.Pop(); // не забываем извлекать уже проверенные вершины
+                }
+
+            string paths = string.Empty;
+            foreach (int i in path) // выводим путь до текущей
+            {
+                paths += i.ToString() + " ";
+            }
+            Paths.Add(paths);
+        }
+    }
+
+    public class GraphC
+    {
+        public List<int> Keys = new List<int>();
+
+        public List<string> Edge = new List<string>();
+
+        public List<int> NodeLinks { get; set; }
+
+        public GraphC()
+        {
+            NodeLinks = new List<int>();
+        }
+
+        public GraphC(int index, List<int> keys, List<string> edge)
+        {
+            Keys.AddRange(keys);
+            Edge.AddRange(edge);
+
+            NodeLinks = new List<int>();
+
+            var Edges = Edge.FindAll((ed) =>
+            {
+                var start = ed.Substring(0, ed.IndexOf('-'));
+                int startVal = int.Parse(start);
+                if (startVal == index)
+                {
+                    return true;
+                }
+                else return false;
+            });
+
+            foreach (var Edge in Edges)
+            {
+                var stop = int.Parse(Edge.Substring(Edge.IndexOf('-') + 1, Edge.Length - (Edge.IndexOf('-') + 1)));
+                NodeLinks.Add(stop);
+            }
+
+            //Console.WriteLine($"Y verchini {index} svyazey {NodeLinks.Count}");
+        }
+
+        public GraphC this[int index, List<int> keys, List<string> edges]
+        {
+            get
+            {
+                return new GraphC(index, keys, edges);
+            }
+        }
+
+        public void AddKey(int key)
+        {
+            Keys.Add(key);
+        }
+
+        public void AddEdge(string edge)
+        {
+            Edge.Add(edge);
+        }
     }
 }

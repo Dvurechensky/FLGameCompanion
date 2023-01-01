@@ -150,8 +150,14 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         resultCountSystem++;
                         resultDataSystems.Add(dirName, UniverseSystemsData[dirName]);
 
-                        road_1.Items.Add((IsRussian) ? UniverseSystemsData[dirName].Name : UniverseSystemsData[dirName].Id);
-                        road_2.Items.Add((IsRussian) ? UniverseSystemsData[dirName].Name : UniverseSystemsData[dirName].Id);
+                        ComboBoxItem item1 = new ComboBoxItem();
+                        item1.Text = (string.IsNullOrEmpty(UniverseSystemsData[dirName].Name) ? UniverseSystemsData[dirName].Id : UniverseSystemsData[dirName].Name);
+                        item1.ID = UniverseSystemsData[dirName].Id;
+                        road_1.Items.Add(item1);
+                        ComboBoxItem item2 = new ComboBoxItem();
+                        item2.Text = (string.IsNullOrEmpty(UniverseSystemsData[dirName].Name) ? UniverseSystemsData[dirName].Id : UniverseSystemsData[dirName].Name);
+                        item2.ID = UniverseSystemsData[dirName].Id;
+                        road_2.Items.Add(item2);
 
                         if (UniverseSystemsData[dirName].Name.Length == 0)
                             blockInfo.Items.Add(UniverseSystemsData[dirName].Id);
@@ -182,7 +188,10 @@ namespace Freelancer_Companion_by_Dormammu.Services
                         var destiny = name.Substring(name.IndexOf('_') + 4, name.Length - 4 - sys.Length);
                         if (destiny.IndexOf('_') != -1)
                             destiny = destiny.Substring(0, destiny.IndexOf('_'));
-                        var res = sys.ToLower() + "=" + destiny.ToLower();
+                        //проверяем goto
+                        if (elem.GotoID == null || elem.GotoID.ToLower().Contains(sys.ToLower())) continue;
+
+                        var res = sys.ToLower() + "=" + elem.GotoID.ToLower();
                         if(!res.Contains("police01"))
                             HollRoads.Add(res);
                     }

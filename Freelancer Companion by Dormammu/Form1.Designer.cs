@@ -51,6 +51,7 @@
             this.buttonCloseMap = new System.Windows.Forms.Button();
             this.comboBoxSearch = new System.Windows.Forms.ComboBox();
             this.labelSearch = new System.Windows.Forms.Label();
+            this.checkBoxSearchState = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.Map)).BeginInit();
             this.SuspendLayout();
             // 
@@ -316,12 +317,25 @@
             this.labelSearch.TabIndex = 22;
             this.labelSearch.Text = "Поиск элемента";
             // 
+            // checkBoxSearchState
+            // 
+            this.checkBoxSearchState.AutoSize = true;
+            this.checkBoxSearchState.Font = new System.Drawing.Font("Mongolian Baiti", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxSearchState.Location = new System.Drawing.Point(852, 83);
+            this.checkBoxSearchState.Margin = new System.Windows.Forms.Padding(2);
+            this.checkBoxSearchState.Name = "checkBoxSearchState";
+            this.checkBoxSearchState.Size = new System.Drawing.Size(161, 24);
+            this.checkBoxSearchState.TabIndex = 23;
+            this.checkBoxSearchState.Text = "Алгоритм Дейкстры";
+            this.checkBoxSearchState.UseVisualStyleBackColor = true;
+            // 
             // FreelancerCompanionDvurechensky
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Cornsilk;
             this.ClientSize = new System.Drawing.Size(1294, 800);
+            this.Controls.Add(this.checkBoxSearchState);
             this.Controls.Add(this.labelSearch);
             this.Controls.Add(this.comboBoxSearch);
             this.Controls.Add(this.buttonCloseMap);
@@ -381,6 +395,7 @@
         private System.Windows.Forms.Button buttonCloseMap;
         private System.Windows.Forms.ComboBox comboBoxSearch;
         private System.Windows.Forms.Label labelSearch;
+        private System.Windows.Forms.CheckBox checkBoxSearchState;
     }
 }
 
