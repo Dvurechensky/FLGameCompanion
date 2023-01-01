@@ -500,6 +500,7 @@ namespace Freelancer_Companion_by_Dormammu
             var combo = (ComboBox)sender;
 
             LogService.LogEvent("Ищем элемент " + comboBoxSearch.Text + "(" + (combo.SelectedItem as ComboBoxItem).ID + ")" + "...");
+            LogService.LogEvent("------------------");
             LogService.LogEvent("----Астероиды----");
 
             //Ищу совпадения в астероидах

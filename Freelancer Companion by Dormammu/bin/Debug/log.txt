@@ -116,4 +116,5 @@ Error Parse Position - = -97000, 3700, 66063 - systems\ETXE01\ETXE01.ini
 Error Parse Position - = -97000, 2300, 66063 - systems\ETXE01\ETXE01.ini
 Error Parse Position - = -97000, 2300, 67563 - systems\ETXE01\ETXE01.ini
 Error Parse Position - = -103000, 0, 66763 - systems\ETXE01\ETXE01.ini
+Error Parse Position - = -127400, 0, -32700 - systems\Sith01\Sith01.ini
 Error Parse Position - = -25000, 0, 23000 - systems\ORH01\ORH01.ini
