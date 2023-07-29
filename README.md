@@ -39,5 +39,5 @@
 
 <p align="center">
 
-<img src="/Resources/help.gif" height="240" width="370">
+<img src="/Resources/help.gif" height="1000" width="800">
 </p>
