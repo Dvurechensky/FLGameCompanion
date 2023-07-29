@@ -36,7 +36,12 @@
 1. **equipments.ini**: в формате - **3, 4, 534954, 0, orchid_st_torpedo_ammo, Торпеда, 1000, 0.00, 0, 0**  **systems.ini** 
 2. **systems.ini**: в формате - **start01=Пенсильвания** 
 
+> <g-emoji tone="0">👋</g-emoji> Важно
+>
+- MyFLStat.sql - файл соддержит в себе всю необходимую информацию - для изъятия информации в нужном виде используйте Notepad++ 
+- В папке **Resources** лежит **FLStat**
+>
 
 <p align="center">
-    <img src="/Resources/help.gif" height="500" width="800">
+    <img src="Resources/help.gif" height="500" width="800">
 </p>
