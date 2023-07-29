@@ -22,6 +22,7 @@
 # Помощник игры Freelancer Rebirth
 > Version 2.0. Работает стабильно на моде Freelancer Rebirth 7.7
 
+- Сайт нашего проекта [Freelancer Rebirth](http://freelancerothe.ucoz.ru/)
 ## <g-emoji class="g-emoji" alias="crystal_ball" fallback-src="https://github.githubassets.com/images/icons/emoji/unicode/1f52e.png">🔮</g-emoji> Возможности
 
 1. Показывает в системах: Все порталы, контейнеры, базы
