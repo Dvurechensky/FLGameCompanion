@@ -1,6 +1,6 @@
 <p align="center">
     <p align="center">
-        <img src="Resources/gitPreview.png" width="100%" alt="Banner">
+        <img src="Resources/gitPreviews.png" width="100%" alt="Banner">
     <a></a>
     </p>
     <p align="center">
