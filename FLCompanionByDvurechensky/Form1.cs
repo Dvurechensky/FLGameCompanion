@@ -88,11 +88,11 @@ namespace FLCompanionByDvurechensky
         /// </summary>
         private void InitializeSystems()
         {
-            //checkBoxRusNames.Checked = true;
+            checkBoxRusNames.Checked = true;
             SystemService = new SystemService(isRussian: checkBoxRusNames.Checked, logService: LogService);
             DrawService = new DrawService(5, 3);
             SystemService.GetInfo(comboBoxSystems, comboBoxRoadFirst, comboBoxRoadLast, comboBoxSearch, LogService);
-            //labelSystemss.Text = comboBoxSystems.Items.Count.ToString();
+            labelSystemss.Text = comboBoxSystems.Items.Count.ToString();
         }
 
         /// <summary>

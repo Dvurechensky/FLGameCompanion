@@ -46,3 +46,7 @@
 <p align="center">
     <img src="Resources/help.gif" height="500" width="800">
 </p>
+<h1 align="center">Как это выглядит?👨🏽‍💻</h1>
+<p align="center">
+    <img src="Resources/view.gif" height="500" width="800">
+</p>
